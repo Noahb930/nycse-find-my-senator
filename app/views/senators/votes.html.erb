@@ -1,0 +1,121 @@
+
+<center>
+<div class="card text-center center" id="senator_card">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="/senators/<%=@senator.id%>">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="">Voting Record</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Campaign Finances</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <% votes = @senator.votes %>
+    <% votes.each do |vote| %>
+      <% bill = Bill.find(vote.bill_id) %>
+
+
+      <% if vote.stance =="unknown" %>
+        <% header = "Unknown Stance on Senate Bill " %>
+        <% type="warning" %>
+      <% end %>
+
+      <% if vote.stance == "for" %>
+        <% header = "Voted for Senate Bill " %>
+        <% if bill.supports_gun_control == "on" %>
+          <% type="success" %>
+        <% end %>
+        <% if bill.supports_gun_control == "off" %>
+          <% type="danger" %>
+        <% end %>
+      <% end %>
+
+      <% if vote.stance == "sponsor" %>
+        <% header == "Sponsored Senate Bill " %>
+        <% if bill.supports_gun_control == "on" %>
+          <% type="success" %>
+        <% end %>
+        <% if bill.supports_gun_control == "off" %>
+          <% type="danger" %>
+        <% end %>
+      <% end %>
+
+      <% if vote.stance == "cosponsor" %>
+        <% header = "Coponsored Senate Bill " %>
+        <% if bill.supports_gun_control == "on" %>
+          <% type="success" %>
+        <% end %>
+        <% if bill.supports_gun_control == "off" %>
+          <% type="danger" %>
+        <% end %>
+      <% end %>
+
+      <% if vote.stance == "against" %>
+        <% header = "Voted against Senate Bill " %>
+        <% if bill.supports_gun_control == "off" %>
+          <% type="success" %>
+        <% end %>
+        <% if bill.supports_gun_control == "on" %>
+          <% type="danger" %>
+        <% end %>
+      <% end %>
+      <div class="modal fade" id="stanceModal-<%= @senator.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" >Edit Stance on <%= bill.number %></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <%= form_for vote do |form| %>
+              <div class = "form-group">
+                <label for="stance-sponsor" class="inline">Sponsor:</label>
+                <input type="radio" id="stance-sponsor" class="inline" name="vote[stance]"  <% if header == "Sponsored" %>checked="checked"<% end %> value = "sponsor">
+                <label for="stance-cosponsor" class="inline">Cosponsor:</label>
+                <input type="radio" id="stance-cosponsor" class="inline" name="vote[stance]" <% if header == "Cosponsored" %>checked="checked"<% end %> value = "cosponsor">
+                <label for="stance-for-voter" class="inline">For:</label>
+                <input type="radio" id="stance-for-voter" class="inline" name="vote[stance]" <% if header == "Voted for" %>checked="checked"<% end %>value = "for">
+                <label for="stance-unknown-voter" class="inline">Unknown:</label>
+                <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]" <% if header == "Unknown Stance on" %>checked="checked"<% end %>value = "unknown">
+                <label for="stance-against-voter" class="inline">Against:</label>
+                <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" <% if header == "Voted against" %>checked="checked"<% end %> value = "against">              </div>
+              <div class = "form-group">
+                <label for="statement">Official Position:</label>
+                <textarea  id="statement" name="vote[position]"><%= vote.position %></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+              <% end %>
+
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class = "card border-<%= type %>">
+        <div class="card-header"><%= header %> <%= bill.number %></div>
+        <div class="card-body">
+          <p><strong>Status: </strong><%= bill.status %></p>
+          <p><strong>Summary: </strong> <%= bill.summary %> </p>
+          <p><strong>Official Position on Bill: </strong><%if vote.position == nil || vote.position == "" %>None Specified<% else %><%=vote.position %><%end%></p>
+          <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= @senator.id %>">Edit Stance</button>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+</center>
+<%= link_to 'Edit', edit_senator_path(@senator) %> |
+<%= link_to 'Back', senators_path %>

@@ -1,0 +1,32 @@
+
+<center>
+<div class="card text-center center" id="senator_card">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/senators/<%= @senator.id%>/record">Voting Record</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Campaign Finances</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <img align="left" src="<%= @senator.img %>" ></img>
+    <div>
+    <h1><%= @senator.name%></h1>
+    <h3><%= @senator.party%> - <%= @senator.district%></h3>
+    <h3>NYCSE Rating: <%= @senator.rating%></h2>
+    <h4>Beliefs Regarding Gun Control:</h4>
+    <p><%= @senator.beliefs%></p>
+    </div>
+
+
+  </div>
+</div>
+</center>
+<%= link_to 'Edit', edit_senator_path(@senator) %> |
+<%= link_to 'Back', senators_path %>

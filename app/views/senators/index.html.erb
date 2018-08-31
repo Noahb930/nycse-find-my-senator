@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Senators</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Party</th>
+      <th>Beliefs</th>
+      <th>Rating</th>
+      <th>Img</th>
+      <th>District</th>
+      <th>Url</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @senators.each do |senator| %>
+      <tr>
+        <td><%= senator.name %></td>
+        <td><%= senator.email %></td>
+        <td><%= senator.party %></td>
+        <td><%= senator.beliefs %></td>
+        <td><%= senator.rating %></td>
+        <td><%= senator.img %></td>
+        <td><%= senator.district %></td>
+        <td><%= senator.url %></td>
+        <td><%= link_to 'Show', senator %></td>
+        <td><%= link_to 'Edit', edit_senator_path(senator) %></td>
+        <td><%= link_to 'Destroy', senator, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Senator', new_senator_path %>

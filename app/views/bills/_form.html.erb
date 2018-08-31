@@ -1,0 +1,67 @@
+<%= form_with(model: bill, local: true) do |form| %>
+  <% if bill.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(bill.errors.count, "error") %> prohibited this bill from being saved:</h2>
+
+      <ul>
+      <% bill.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class = "form-row align-items-center">
+    <div class = "form-group col-sm-3">
+      <label for="number">Legislation Number:</label>
+      <input type="text" class="form-control" id="number" placeholder="Legislation Number" name="bill[number]">
+    </div>
+    </div>
+    <div class = "form-group col-sm-3">
+      <label for="session">Legislative Session:</label>
+        <select class="form-control" id="Session" name="bill[session]">
+          <option value=null>Select Session</option>
+          <option value="2017-2018">2017-2018</option>
+        </select>
+    </div>
+    <div class="form-group col-sm-2" id="check-1">
+      <input class="form-check-input" type="checkbox" id="supports_gun_control" name="bill[supports_gun_control]">
+      <label class="form-check-label" for="supports_gun_control">
+        Supports Gun Control
+      </label>
+    </div>
+    <div class = "form-group col-sm-3">
+      <label for="status">Status:</label>
+      <select class="form-control" id="Status" name="bill[status]">
+        <option value="Stricken">Select Status</option>
+        <option value=null>Stricken</option>
+        <option value="Introduced">Introduced</option>
+        <option value="In Committee">In Committee</option>
+        <option value="On Floor Calendar">On Floor Calendar</option>
+        <option value="Passed Senate">Passed Senate</option>
+        <option value="Passed Assembly">Passed Assembly</option>
+        <option value="Passed Senate and Assembly">Passed Senate and Assembly</option>
+        <option value="Delivered To Governor">Delivered To Governor</option>
+        <option value="Signed By Governor">Signed By Governor</option>
+        <option value="Vetoed By Governor">Vetoed By Governor</option>
+      </select>
+  </div>
+  </div>
+  <div class = "form-row">
+    <div class = "form-group col-sm-12">
+      <label for="url">URL:</label>
+      <input type="text" class="form-control" id="url" placeholder="URL" name="bill[url]">
+    </div>
+  </div>
+  <div class = "form-row">
+    <div class = "form-group col-sm-12">
+      <label for="summary">Summary:</label>
+      <textarea  class="form-control" id="summary" placeholder="Summary" name="bill[summary]"></textarea>
+    </div>
+  </div>
+  <div class = "form-row">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
+  </div>
+
+<% end %>

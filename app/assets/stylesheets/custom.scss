@@ -1,0 +1,45 @@
+
+@import "bootstrap";
+
+/* universal */
+
+
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+img {
+    border-radius: 10px;
+}
+#fms_contaner{
+  width: 500px;
+
+}
+form {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #888;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #eee;
+}
+#senator_card{
+  width:850px;
+  margin-top: 50px;
+  border-radius: 10px;
+}
+#check-1{
+  margin-left: 40px;
+}
