@@ -1,11 +1,8 @@
 require_relative 'boot'
-if RAILS_ENV.eql?('development')
-  require 'dotenv/load'
-end
-if RAILS_ENV.eql?('test')  
-  require 'dotenv/load'
-end
+
 require 'rails/all'
+if (app.get('env') == 'development'){ require('dotenv/load').config(); }
+if (app.get('test') == 'development'){ require('dotenv/load').config(); }
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
