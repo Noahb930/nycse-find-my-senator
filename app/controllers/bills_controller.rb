@@ -1,15 +1,18 @@
 class BillsController < ApplicationController
+  USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
   before_action :set_bill, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate, except: [:index, :show]
   # GET /bills
   # GET /bills.json
   def index
     @bills = Bill.all
   end
-
+  def admin_index
+    @bills = Bill.all
+  end
   # GET /bills/1
   # GET /bills/1.json
-  def show
+  def admin_show
   end
 
   # GET /bills/new
@@ -82,5 +85,11 @@ class BillsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_params
       params.require(:bill).permit(:number, :status, :session, :summary, :supports_gun_control)
+    end
+
+    def authenticate
+      authenticate_or_request_with_http_digest do |username|
+        USERS[username]
+      end
     end
 end

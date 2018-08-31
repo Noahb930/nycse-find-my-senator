@@ -29,9 +29,13 @@
         <td><%= senator.district %></td>
         <td><%= senator.url %></td>
         <td><%= link_to 'Show', senator %></td>
+        <td><%= link_to 'Edit', edit_senator_path(senator) %></td>
+        <td><%= link_to 'Destroy', senator, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
+
+<%= link_to 'New Senator', '/admin/senators/new' %>

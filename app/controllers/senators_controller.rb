@@ -2,7 +2,8 @@ require 'nokogiri'
 require 'open-uri'
 class SenatorsController < ApplicationController
   before_action :set_senator, only: [:show, :edit, :update, :destroy]
-
+  USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
+  before_action :authenticate, except: [:index, :show, :find, :votes]
   def find
     address = params[:address]
     city = params[:city]
@@ -28,7 +29,15 @@ class SenatorsController < ApplicationController
   # GET /senators/1.json
   def show
   end
+  def admin_index
+    @senators = Senator.all
+  end
 
+  # GET /senators/1
+  # GET /senators/1.json
+  def admin_show
+    @senator = Senator.find(params[:id])
+  end
   # GET /senators/new
   def new
     @senator = Senator.new
@@ -39,6 +48,9 @@ class SenatorsController < ApplicationController
   end
 
   def votes
+    @senator = Senator.find(params[:id])
+  end
+  def admin_votes
     @senator = Senator.find(params[:id])
   end
   # POST /senators
@@ -90,5 +102,10 @@ class SenatorsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def senator_params
     params.require(:senator).permit(:name, :email, :party, :beliefs, :rating, :img, :district, :url)
+  end
+  def authenticate
+    authenticate_or_request_with_http_digest do |username|
+      USERS[username]
+    end
   end
 end

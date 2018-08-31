@@ -1,6 +1,7 @@
 class VotesController < ApplicationController
   before_action :set_vote, only: [:show, :edit, :update, :destroy]
-
+  USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
+  before_action :authenticate
   # GET /votes
   # GET /votes.json
   def index
@@ -70,5 +71,10 @@ class VotesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def vote_params
       params.require(:vote).permit(:position, :bill_id, :senator_id, :stance)
+    end
+    def authenticate
+      authenticate_or_request_with_http_digest do |username|
+        USERS[username]
+      end
     end
 end
