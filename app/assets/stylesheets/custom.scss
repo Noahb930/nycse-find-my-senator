@@ -1,17 +1,10 @@
-
 @import "bootstrap";
 
 /* universal */
 
 
 
-section {
-  overflow: auto;
-}
 
-textarea {
-  resize: vertical;
-}
 
 .center {
   text-align: center;
@@ -23,11 +16,7 @@ textarea {
 img {
     border-radius: 10px;
 }
-#fms_contaner{
-  width: 500px;
-
-}
-form {
+.form {
   border-style: solid;
   border-width: 2px;
   border-color: #888;
@@ -42,4 +31,7 @@ form {
 }
 #check-1{
   margin-left: 40px;
+}
+:hover{
+  background-color: inherit;
 }

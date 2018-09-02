@@ -1,27 +1,41 @@
-<h1 class="center">Find My Senator</h1>
-<div class = "container center" id="fms_contaner">
-  <form method="post" action="/">
-    <%= token_tag %>
-    <div class = "form-row">
-      <div class = "form-group col-sm-12">
-        <label for="address">Address Line 1:</label>
-        <input type="text" class="form-control" id="address" name="address" placeholder="Address Line 1">
-      </div>
-    </div>
-    <div class = "form-row">
-      <div class = "form-group col-sm-8">
-        <label for="city">City:</label>
-        <input type="text" class="form-control" id="city" name="city" placeholder="City">
-      </div>
-      <div class = "form-group col-sm-4">
-        <label for="zipcode">Zipcode:</label>
-        <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zipcode">
-      </div>
-    </div>
-    <div class = "form-row">
-      <div class="col-sm-12">
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-      </div>
-    </div>
-  </form>
-</div>
+
+
+
+  			<div id="wrapper">
+  					<section class="main alt special" id="contact">
+  						<header>
+  							<h2>Find My Senator</h2>
+
+  						</header>
+  						<div class="inner narrow">
+  							<form action="/" method="post">
+                  <%= token_tag %>
+                  <div class = "field">
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Address Line 1">
+                  </div>
+                  <div class = "field half">
+                    <input type="text" class="form-control" id="city" name="city" placeholder="City">
+                  </div>
+                  <div class = "field half">
+                    <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zipcode">
+                  </div>
+  								<ul class="actions">
+  									<li><button class="button" type="submit">Submit</button></li>
+  								</ul>
+  							</form>
+  						</div>
+  					</section>
+
+  					<footer id="footer">
+                          <p class="copyright">
+  						© NYC Says Enough. All rights reserved. </p>
+  					</footer>
+
+  			</div>
+  			<script src="assets/js/jquery.min.js"></script>
+  			<script src="assets/js/jquery.dropotron.min.js"></script>
+  			<script src="assets/js/jquery.scrollex.min.js"></script>
+  			<script src="assets/js/jquery.scrolly.min.js"></script>
+  			<script src="assets/js/skel.min.js"></script>
+  			<script src="assets/js/util.js"></script>
+  			<script src="assets/js/main.js"></script>
