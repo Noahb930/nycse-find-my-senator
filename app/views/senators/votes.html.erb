@@ -53,10 +53,10 @@
         <a class="nav-link" href="/senators/<%=@senator.id%>">Overview</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="">Voting Record</a>
+        <a class="nav-link active" href="#">Voting Record</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Campaign Finances</a>
+        <a class="nav-link" href="/senators/<%= @senator.id%>/donations">Campaign Finances</a>
       </li>
     </ul>
   </div>
@@ -80,7 +80,7 @@
 
 
       <% if vote.stance =="unknown" %>
-        <% header = "Unknown vote.stanceon Senate Bill " %>
+        <% header = "Unknown Stance on Senate Bill " %>
         <% type="warning" %>
       <% end %>
 

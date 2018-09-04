@@ -53,6 +53,13 @@ class SenatorsController < ApplicationController
   def admin_votes
     @senator = Senator.find(params[:id])
   end
+  def donations
+    @senator = Senator.find(params[:id])
+  end
+  def admin_donations
+    @senator = Senator.find(params[:id])
+    @donation = Donation.new
+  end
   # POST /senators
   # POST /senators.json
   def create
