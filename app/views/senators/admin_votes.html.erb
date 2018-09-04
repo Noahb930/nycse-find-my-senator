@@ -1,10 +1,57 @@
 
+
 <center>
+<%   for_votes = 0 %>
+<%   unknown_votes = 0 %>
+<%   against_votes = 0 %>
+<% votes = @senator.votes %>
+<% votes.each do |vote| %>
+  <% bill = Bill.find(vote.bill_id) %>
+
+  <% if vote.stance=="unknown" %>
+    <% unknown_votes = unknown_votes + 1 %>
+  <% end %>
+
+  <% if vote.stance== "for" %>
+    <% if bill.supports_gun_control == "yes" %>
+      <% for_votes = for_votes + 1 %>
+    <% end %>
+    <% if bill.supports_gun_control == "no" %>
+      <% against_votes = against_votes + 1 %>
+    <% end %>
+  <% end %>
+  <% if vote.stance== "sponsor" %>
+    <% if bill.supports_gun_control == "yes" %>
+      <% for_votes = for_votes + 1 %>
+    <% end %>
+    <% if bill.supports_gun_control == "no" %>
+      <% against_votes = against_votes + 1 %>
+    <% end %>
+  <% end %>
+
+  <% if vote.stance== "cosponsor" %>
+    <% if bill.supports_gun_control == "yes" %>
+      <% for_votes = for_votes + 1 %>
+    <% end %>
+    <% if bill.supports_gun_control == "no" %>
+      <% against_votes = against_votes + 1 %>
+    <% end %>
+  <% end %>
+
+  <% if vote.stance== "against" %>
+    <% if bill.supports_gun_control == "no" %>
+      <% for_votes = for_votes + 1 %>
+    <% end %>
+    <% if bill.supports_gun_control == "yes" %>
+      <% against_votes = against_votes + 1 %>
+    <% end %>
+  <% end %>
+<% end %>
 <div class="card text-center center" id="senator_card">
   <div class="card-header">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
-        <a class="nav-link" href="/senators/<%=@senator.id%>">Overview</a>
+        <a class="nav-link" href="admin/senators/<%=@senator.id%>">Overview</a>
       </li>
       <li class="nav-item">
         <a class="nav-link active" href="">Voting Record</a>
@@ -15,10 +62,23 @@
     </ul>
   </div>
   <div class="card-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <h6 class="text-success"><strong>Votes For Gun Control:</strong> <%= for_votes %></h6>
+        </div>
+        <div class="col-sm-4">
+          <h6 class="text-warning"><strong>Unknown Votes:</strong> <%= unknown_votes %></h6>
+        </div>
+        <div class="col-sm-4">
+          <h6 class="text-danger"><strong>Votes Against Gun Control:</strong> <%= against_votes %></h6>
+        </div>
+      </div>
+    </div>
     <% votes = @senator.votes %>
     <% votes.each do |vote| %>
       <% bill = Bill.find(vote.bill_id) %>
-
+      <%= puts bill.supports_gun_control %>
 
       <% if vote.stance =="unknown" %>
         <% header = "Unknown Stance on Senate Bill " %>
@@ -27,40 +87,40 @@
 
       <% if vote.stance == "for" %>
         <% header = "Voted for Senate Bill " %>
-        <% if bill.supports_gun_control == "on" %>
+        <% if bill.supports_gun_control == "yes" %>
           <% type="success" %>
         <% end %>
-        <% if bill.supports_gun_control == "off" %>
+        <% if bill.supports_gun_control == "no" %>
           <% type="danger" %>
         <% end %>
       <% end %>
 
       <% if vote.stance == "sponsor" %>
         <% header == "Sponsored Senate Bill " %>
-        <% if bill.supports_gun_control == "on" %>
+        <% if bill.supports_gun_control == "yes" %>
           <% type="success" %>
         <% end %>
-        <% if bill.supports_gun_control == "off" %>
+        <% if bill.supports_gun_control == "no" %>
           <% type="danger" %>
         <% end %>
       <% end %>
 
       <% if vote.stance == "cosponsor" %>
         <% header = "Coponsored Senate Bill " %>
-        <% if bill.supports_gun_control == "on" %>
+        <% if bill.supports_gun_control == "yes" %>
           <% type="success" %>
         <% end %>
-        <% if bill.supports_gun_control == "off" %>
+        <% if bill.supports_gun_control == "no" %>
           <% type="danger" %>
         <% end %>
       <% end %>
 
       <% if vote.stance == "against" %>
         <% header = "Voted against Senate Bill " %>
-        <% if bill.supports_gun_control == "off" %>
+        <% if bill.supports_gun_control == "no" %>
           <% type="success" %>
         <% end %>
-        <% if bill.supports_gun_control == "on" %>
+        <% if bill.supports_gun_control == "yes" %>
           <% type="danger" %>
         <% end %>
       <% end %>
@@ -109,6 +169,7 @@
           <p><strong>Status: </strong><%= bill.status %></p>
           <p><strong>Summary: </strong> <%= bill.summary %> </p>
           <p><strong>Official Position on Bill: </strong><%if vote.position == nil || vote.position == "" %>None Specified<% else %><%=vote.position %><%end%></p>
+          <%= link_to "View Bill", bill , class: "btn btn-primary btn-block" %>
           <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= @senator.id %>">Edit Stance</button>
 
         </div>
@@ -117,5 +178,3 @@
   </div>
 </div>
 </center>
-<%= link_to 'Edit', edit_senator_path(@senator) %> |
-<%= link_to 'Back', senators_path %>

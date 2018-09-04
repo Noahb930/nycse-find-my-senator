@@ -1,21 +1,121 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Number:</strong>
-  <%= @bill.number %>
-</p>
+<div class="card text-center bill">
+  <div class="card-header ">
+    <h2 class = "card-title">NY State Senate Bill <%= @bill.number %></h3>
+  </div>
+  <div class="card-body">
+    <p class="card-text"><strong>Summary:</strong> <%= @bill.summary %></p>
+    <p class="card-text"><strong>Session:</strong> <%= @bill.session %>, <a href="<%= @bill.url %>">Official Text</a>, <strong>Status:</strong> <%= @bill.status %></p>
+    <div class="white-text">
+      <%= link_to "Edit", edit_bill_path , class: "btn btn-primary btn-block"%>
+    </div>
+  </div>
+</div>
+<div class="container-fluid votes-container">
+  <h2 class="text-primary">Sponsor(s)</h2>
+  <% sponsors = @bill.votes.where(:stance => "sponsor") %>
+  <% sponsors.reverse.each_slice(6) do |sponsors| %>
+    <div class = "row card-deck" >
+      <% sponsors.each do |sponsor| %>
+        <% senator = Senator.find(sponsor.senator_id) %>
+        <div class="card col-md-2 border-primary text-primary" >
+          <img class="card-img-top" src="<%= senator.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= senator.name %></h4>
 
-<p>
-  <strong>Status:</strong>
-  <%= @bill.status %>
-</p>
+          <p> <%= senator.party %> - <%= senator.district %> </p>
+          <p><strong>Official Statement:</strong> <%= sponsor.position %> </p>
+          <div class ="white-text">
+          <%= link_to "View", senator , class: "btn btn-primary btn-block" %>
+                  </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="container-fluid votes-container">
+  <h2 class="text-secondary">Cosponsors</h2>
+  <% cosponsors = @bill.votes.where(:stance => "cosponsor") %>
+  <% cosponsors.reverse.each_slice(6) do |cosponsors| %>
+    <div class = "row card-deck" >
+      <% cosponsors.each do |cosponsor| %>
+        <% senator = Senator.find(cosponsor.senator_id) %>
 
-<p>
-  <strong>Session:</strong>
-  <%= @bill.session %>
-</p>
+        <div class="card col-md-2 border-secondary text-secondary" >
+          <img class="card-img-top" src="<%= senator.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= senator.name %></h4>
 
-<p>
-  <strong>Summary:</strong>
-  <%= @bill.summary %>
-</p>
+          <p> <%= senator.party %> - <%= senator.district %> </p>
+          <p><strong>Official Statement:</strong> <%= cosponsor.position %> </p>
+          <div class ="white-text">
+           <%= link_to "View", senator , class: "btn btn-primary btn-block" %>
+                    </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="container-fluid votes-container">
+  <h2 class="text-success">Senators in Favor of the Bill</h2>
+  <% for_voters = @bill.votes.where(:stance => "for") %>
+  <% for_voters.reverse.each_slice(6) do |for_voters| %>
+    <div class = "row card-deck" >
+      <% for_voters.each do |for_voter| %>
+        <% senator = Senator.find(for_voter.senator_id) %>
+
+        <div class="card col-md-2 border-success text-success" >
+          <img class="card-img-top" src="<%= senator.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= senator.name %></h4>
+
+          <p> <%= senator.party %> - <%= senator.district %> </p>
+          <p><strong>Official Statement:</strong> <%= for_voter.position %> </p>
+          <div class ="white-text">
+           <%= link_to "View", senator , class: "btn btn-primary btn-block" %>
+                    </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="container-fluid votes-container">
+  <h2 class="text-warning">Senators with Unknown Stances</h2>
+  <% unknown_voters = @bill.votes.where(:stance => "unknown") %>
+  <% unknown_voters.reverse.each_slice(6) do |unknown_voters| %>
+    <div class = "row card-deck" >
+      <% unknown_voters.each do |unknown_voter| %>
+        <% senator = Senator.find(unknown_voter.senator_id) %>
+
+        <div class="card col-md-2 border-warning text-warning" >
+          <img class="card-img-top" src="<%= senator.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= senator.name %></h4>
+          <p> <%= senator.party %> - <%= senator.district %> </p>
+          <p><strong>Official Statement:</strong> <%= unknown_voter.position %> </p>
+          <div class ="white-text">
+           <%= link_to "View", senator , class: "btn btn-primary btn-block" %>
+                    </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="container-fluid votes-container">
+<h2 class="text-danger">Senators Against the Bill</h2>
+  <% against_voters = @bill.votes.where(:stance => "against") %>
+  <% against_voters.reverse.each_slice(6) do |against_voters| %>
+    <div class = "row card-deck" >
+      <% against_voters.each do |against_voter| %>
+        <% senator = Senator.find(against_voter.senator_id) %>
+        <div class="card col-md-2 border-danger text-danger" >
+          <img class="card-img-top" src="<%= senator.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= senator.name %></h4>
+
+          <p> <%= senator.party %> - <%= senator.district %> </p>
+          <p><strong>Official Statement:</strong> <%= against_voter.position %> </p>
+          <div class ="white-text">
+           <%= link_to "View", senator , class: "btn btn-primary btn-block" %>
+                    </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

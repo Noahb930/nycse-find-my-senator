@@ -1,11 +1,24 @@
 @import "bootstrap";
 
 /* universal */
+body{
+  background-color: #eee;
+}
 
 
 
-
-
+.votes-container{
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  text-align: center;
+  margin:15px;
+}
+.votes-container .card{
+  background-color: #eeeeee;
+  margin-bottom: 10px;
+  padding: 5px;
+}
 .center {
   text-align: center;
 }
@@ -16,7 +29,7 @@
 img {
     border-radius: 10px;
 }
-.form {
+form {
   border-style: solid;
   border-width: 2px;
   border-color: #888;
@@ -28,10 +41,4 @@ img {
   width:850px;
   margin-top: 50px;
   border-radius: 10px;
-}
-#check-1{
-  margin-left: 40px;
-}
-:hover{
-  background-color: inherit;
 }
