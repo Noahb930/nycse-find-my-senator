@@ -13,6 +13,7 @@ class BillsController < ApplicationController
   # GET /bills/1
   # GET /bills/1.json
   def admin_show
+    @bill = Bill.find(params[:id])
   end
 
   # GET /bills/new
@@ -22,6 +23,7 @@ class BillsController < ApplicationController
 
   # GET /bills/1/edit
   def edit
+    @bill = Bill.find(params[:id])
   end
 
   # POST /bills
@@ -84,7 +86,7 @@ class BillsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_params
-      params.require(:bill).permit(:number, :status, :session, :summary, :supports_gun_control)
+      params.require(:bill).permit(:number, :status, :session, :summary, :supports_gun_control , :url)
     end
 
     def authenticate

@@ -1,5 +1,66 @@
 <h1>New Bill</h1>
 
-<%= render 'form', bill: @bill %>
+<%= form_for(@bill, :url => {:action => 'create', :id => @bill.id}) do |form| %>
+  <% if @bill.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(bill.errors.count, "error") %> prohibited this bill from being saved:</h2>
+
+      <ul>
+      <% bill.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class = "form-row">
+    <div class = "form-group col-sm-4">
+      <%= form.label(:number,"Legislation Number:") %>
+      <%= form.text_field(:number, class: "form-control") %>
+    </div>
+    <div class = "form-group col-sm-4">
+      <% sessions = []
+      50.times do |i|
+        start_year = 2018 - i
+        end_year = start_year + 1
+        session = "#{start_year}-#{end_year}"
+        sessions.push(session)
+      end
+      %>
+      <%= form.label(:session, "Session:") %></th>
+      <%= form.select :session, sessions, {}, { :class => 'form-control' }%>
+    </div>
+    <div class = "form-group col-sm-4">
+      <%= form.label(:session, "Status:") %></th>
+      <%= form.select :status, ["Select Status","Stricken","Introduced","In Committee","On Floor Calendar","Passed Senate","Passed Assembly","Passed Senate and Assembly","Delivered To Governor","Signed By Governor","Vetoed By Governor"], {}, { :class => 'form-control' }%>
+    </div>
+  </div>
+  <div class = "form-row">
+    <div class="form-check form-check-inline">
+      <%= form.check_box :supports_gun_control, {class: "form-check-input"}, "yes", "no" %>
+      <%= form.label :supports_gun_control, "Supports Gun Control:",{class: "form-check-label"} %>
+    </div>
+  </div>
+  <br>
+  <div class = "form-row">
+    <div class = "form-group col-sm-12">
+      <%= form.text_field(:url, class: "form-control") %>
+      <%= form.label(:url,"URL:") %>
+    </div>
+  </div>
+  <div class = "form-row">
+    <div class = "form-group col-sm-12">
+      <%= form.label(:summary,"Summary:") %>
+      <%= form.text_field(:summary, class: "form-control") %>
+    </div>
+  </div>
+  <div class = "form-row">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
+  </div>
+
+<% end %>
+
+
 
 <%= link_to 'Back', bills_path %>

@@ -3921,17 +3921,6 @@
 			animation: reveal-header 0.5s ease;
 		}
 
-		#header.alt {
-			background-color: #292f33;
-			color: #ffffff;
-			-moz-animation: none;
-			-webkit-animation: none;
-			-ms-animation: none;
-			animation: none;
-			box-shadow: none;
-			background-color: transparent;
-			position: absolute;
-		}
 
 			#header.alt input, #header.alt select, #header.alt textarea {
 				color: #ffffff;
@@ -3946,7 +3935,7 @@
 				}
 
 			#header.alt strong, #header.alt b {
-				color: #ffffff;
+				color: #3f3f3f;
 			}
 
 			#header.alt h1, #header.alt h2, #header.alt h3, #header.alt h4, #header.alt h5, #header.alt h6 {

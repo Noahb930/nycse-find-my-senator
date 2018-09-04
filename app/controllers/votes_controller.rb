@@ -43,7 +43,7 @@ class VotesController < ApplicationController
   def update
     respond_to do |format|
       if @vote.update(vote_params)
-        format.html { redirect_to "/senators/#{@vote.senator_id}/record"}
+        format.html { redirect_to "/admin/senators/#{@vote.senator_id}/votes"}
         format.json { render :show, status: :ok, location: @vote }
       else
         format.html { render :edit }
