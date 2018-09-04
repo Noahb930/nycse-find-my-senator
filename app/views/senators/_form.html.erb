@@ -10,48 +10,54 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class ="form-row">
+    <div class="form-group col-sm-6">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+    <div class="form-group col-sm-6">
+      <%= form.label :email %>
+      <%= form.text_field :email, class: "form-control" %>
+    </div>
   </div>
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+      <%= form.label :party %>
+      <%= form.text_field :party, class: "form-control" %>
+    </div>
 
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
+    <div class="form-group col-sm-4">
+      <%= form.label :district %>
+      <%= form.text_field :district, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-sm-4">
+      <%= form.label :rating %>
+      <%= form.text_field :rating, class: "form-control" %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= form.label :party %>
-    <%= form.text_field :party %>
+  <div class="form-row>"
+    <div class="form-group col-sm-12">
+      <%= form.label :url %>
+      <%= form.text_field :url, class: "form-control" %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= form.label :beliefs %>
-    <%= form.text_field :beliefs %>
+  <div class="form-row>"
+    <div class="form-group col-sm-12">
+      <%= form.label :img %>
+      <%= form.text_field :img, class: "form-control" %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= form.label :rating %>
-    <%= form.text_field :rating %>
+  <div class="form-row>"
+    <div class="form-group col-sm-12">
+      <%= form.label :beliefs %>
+      <%= form.text_area :beliefs, class: "form-control" %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= form.label :img %>
-    <%= form.text_field :img %>
-  </div>
-
-  <div class="field">
-    <%= form.label :district %>
-    <%= form.text_field :district %>
-  </div>
-
-  <div class="field">
-    <%= form.label :url %>
-    <%= form.text_field :url %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
+<br>
+  <div class="form-row>"
+    <div class="actions">
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
   </div>
 <% end %>

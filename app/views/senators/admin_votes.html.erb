@@ -51,13 +51,13 @@
   <div class="card-header">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
-        <a class="nav-link" href="admin/senators/<%=@senator.id%>">Overview</a>
+        <a class="nav-link" href="/admin/senators/<%=@senator.id%>">Overview</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="">Voting Record</a>
+        <a class="nav-link active" href="#">Voting Record</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Campaign Finances</a>
+        <a class="nav-link" href="/admin/senators/<%= @senator.id%>/donations">Campaign Finances</a>
       </li>
     </ul>
   </div>

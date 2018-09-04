@@ -1,29 +1,13 @@
-<p id="notice"><%= notice %></p>
+<% Bill.all.each do |bill| %>
+<div class = "card bill">
+  <div class="card-header">NY State Senate Bill <%= bill.number %></div>
+  <div class="card-body">
+    <p><strong>Status: </strong><%= bill.status %></p>
+    <p><strong>Summary: </strong> <%= bill.summary %> </p>
+    <%= link_to "View", bill , class: "btn btn-primary btn-block" %>
+    <%= link_to "Edit", bill , class: "btn btn-secondary btn-block" %>
+    <%= link_to 'Destroy', bill, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-block btn-danger" %>
 
-<h1>Bills</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Number</th>
-      <th>Status</th>
-      <th>Session</th>
-      <th>Summary</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @bills.each do |bill| %>
-      <tr>
-        <td><%= bill.number %></td>
-        <td><%= bill.status %></td>
-        <td><%= bill.session %></td>
-        <td><%= bill.summary %></td>
-        <td><%= link_to 'Show', bill %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
+  </div>
+</div>
+<% end %>

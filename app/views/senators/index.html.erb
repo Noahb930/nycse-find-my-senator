@@ -1,37 +1,19 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid votes-container">
+  <h2 class="text-secondary">Senators</h2>
+  <% Senator.all.each_slice(6) do |senators| %>
+    <div class = "row card-deck" >
+      <% senators.each do |senator| %>
 
-<h1>Senators</h1>
+        <div class="card col-md-2 border-secondary text-secondary" >
+          <img class="card-img-top" src="<%= senator.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= senator.name %></h4>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Party</th>
-      <th>Beliefs</th>
-      <th>Rating</th>
-      <th>Img</th>
-      <th>District</th>
-      <th>Url</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @senators.each do |senator| %>
-      <tr>
-        <td><%= senator.name %></td>
-        <td><%= senator.email %></td>
-        <td><%= senator.party %></td>
-        <td><%= senator.beliefs %></td>
-        <td><%= senator.rating %></td>
-        <td><%= senator.img %></td>
-        <td><%= senator.district %></td>
-        <td><%= senator.url %></td>
-        <td><%= link_to 'Show', senator %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
+          <p> <%= senator.party %> - <%= senator.district %> </p>
+          <div class ="white-text">
+           <%= link_to "View", senator , class: "btn btn-primary btn-block" %>
+                    </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

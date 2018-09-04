@@ -1,0 +1,32 @@
+
+<center>
+
+<div class="card text-center center" id="senator_card">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="/senators/<%= @senator.id%>">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/senators/<%= @senator.id%>/votes">Voting Record</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Campaign Finances</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <% donations = @senator.donations %>
+    <% donations.each do |donation| %>
+      <% lobbyist = Lobbyist.find(donation.lobbyist_id) %>
+      <div class = "card">
+        <div class="card-header">Recieved <%= donation.value %> from <%= lobbyist.name %></div>
+        <div class="card-body">
+          <p><strong>Year: </strong><%= donation.year %></p>
+          <p><strong>Description: </strong> <%= lobbyist.description %> </p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</center>
