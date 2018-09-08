@@ -1,3 +1,5 @@
+@import url(font-awesome.min.css);
+@import url("https://fonts.googleapis.com/css?family=Raleway:800|Source+Sans+Pro:300,300i,600,600i");
 html, body, div, h2, p, a, strong, ul, li, form, footer, header, nav, section {
 	margin: 0;
 	padding: 0;
@@ -610,9 +612,9 @@ body {
 			line-height: 44px;
 		}
 
-			#header > .logo {
-				left: 1rem;
-			}
+		#header > .logo {
+			left: 1rem;
+		}
 
 	}
 
@@ -629,6 +631,7 @@ body {
 	padding: 3.5rem 0 1.5rem 0 ;
 	color: #bfbfbf;
 	text-align: center;
+	background-color: #fff;
 }
 
 	@media screen and (max-width: 1280px) {
@@ -654,18 +657,14 @@ body {
 	-webkit-transition: opacity 0.5s ease;
 	-ms-transition: opacity 0.5s ease;
 	transition: opacity 0.5s ease;
-}
-#wrapper{
-position:absolute;
-padding:0;
-margin:0;
 
-top:0;
-left:0;
+	position:absolute;
+	padding:0;
+	margin:0;
 
-width: 100%;
-height: 100%;
-}
-#footer{
-	background-color: #fff;
+	top:0;
+	left:0;
+
+	width: 100%;
+	height: 100%;
 }
