@@ -2,10 +2,20 @@
 
 /* universal */
 body{
-  background-color: #ccc;
+  background-color: #F3F3F3;
 }
-
-
+header{
+  margin-top:75px;
+}
+header:before {
+  content: '';
+  display: inline-block;
+  width: 6.5rem;
+  height: 0.25rem;
+  margin: 0 0 1.5rem 0;
+  border-radius: 4px;
+  background-color: #e56f44;
+}
 
 .votes-container{
   border-width: 2px;
@@ -50,3 +60,38 @@ form {
   margin-top: 50px;
   border-radius: 10px;
 }
+.border_orange {
+  border-color:#e56f44;
+  border-width:2px;
+}
+img{
+  border-color:#e56f44;
+  border-width:2px;
+  border-style: solid;
+}
+.nav-tabs .nav-link:hover{
+  border-top-color: #e56f44;
+  border-right-color: #e56f44;
+  border-left-color: #e56f44;
+}
+.nav-tabs .nav-link{
+  border-bottom-style:none;
+  border-width:2px;
+  margin-left: -2px;
+  margin-bottom: -1px;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+  border-top-color: #e56f44;
+  border-right-color: #e56f44;
+  border-bottom-color: #fff;
+  border-left-color: #e56f44;
+  border-width:2px;
+  margin-bottom: -1px
+
+}
+#tab-1{
+  margin-left: 0px
+}
+ul { overflow: hidden;
+text-align: left;}
+*,a, a:hover{color: #3f3f3f}

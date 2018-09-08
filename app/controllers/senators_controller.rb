@@ -3,7 +3,7 @@ require 'open-uri'
 class SenatorsController < ApplicationController
   before_action :set_senator, only: [:show, :edit, :update, :destroy]
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
-  before_action :authenticate, except: [:index, :show, :find, :votes]
+  before_action :authenticate, except: [:index, :show, :find, :votes, :donations]
   def find
     address = params[:address]
     city = params[:city]
