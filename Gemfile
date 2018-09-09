@@ -9,6 +9,7 @@ gem 'bootstrap','~> 4.0.0.alpha3'
 gem 'nokogiri'
 gem 'jquery-rails'
 gem 'popper_js'
+gem 'font-awesome-rails'
 gem 'dotenv-rails', groups: [:development, :test]
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
