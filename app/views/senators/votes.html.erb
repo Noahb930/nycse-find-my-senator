@@ -99,7 +99,7 @@
       <% end %>
 
       <% if vote.stance == "sponsor" %>
-        <% header == "Sponsored Senate Bill " %>
+        <% header = "Sponsored Senate Bill " %>
         <% if bill.supports_gun_control == "yes" %>
           <% icon="thumbs-up" %>
         <% end %>
@@ -136,6 +136,7 @@
           <p><strong>Official Position on Bill: </strong><%if vote.position == nil || vote.position == "" %>None Specified<% else %><%=vote.position %><%end%></p>
         </div>
       </div>
+      <br>
     <% end %>
   </div>
 </div>
