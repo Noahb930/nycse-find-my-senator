@@ -66,17 +66,18 @@
   <div class="card-body">
     <div class="container">
       <div class="row">
-        <div class="col-sm-4">
-          <h6 class="text-success"><strong>Votes For Gun Control:</strong> <%= for_votes %></h6>
+        <div class="col-4">
+          <h7><%= fa_icon "thumbs-up 2x", right: false, text: "Votes For Gun Control: #{for_votes}"%></h7>
         </div>
-        <div class="col-sm-4">
-          <h6 class="text-warning"><strong>Unknown Votes:</strong> <%= unknown_votes %></h6>
+        <div class="col-3">
+          <h7><%= fa_icon "exclamation-triangle 2x", right: false, text: "Unknown Votes: #{unknown_votes}"%></h7>
         </div>
-        <div class="col-sm-4">
-          <h6 class="text-danger"><strong>Votes Against Gun Control:</strong> <%= against_votes %></h6>
+        <div class="col-5">
+          <h7><%= fa_icon "thumbs-down 2x", right: false, text: "Votes Against Gun Control: #{against_votes}"%></h7>
         </div>
       </div>
     </div>
+    <br>
     <% votes = @senator.votes %>
     <% votes.each do |vote| %>
       <% bill = Bill.find(vote.bill_id) %>
@@ -84,55 +85,55 @@
 
       <% if vote.stance =="unknown" %>
         <% header = "Unknown Stance on Senate Bill " %>
-        <% type="warning" %>
+        <% icon="exclamation-triangle" %>
       <% end %>
 
       <% if vote.stance == "for" %>
         <% header = "Voted for Senate Bill " %>
         <% if bill.supports_gun_control == "yes" %>
-          <% type="success" %>
+          <% icon="thumbs-up" %>
         <% end %>
         <% if bill.supports_gun_control == "no" %>
-          <% type="danger" %>
+          <% icon="thumbs-down" %>
         <% end %>
       <% end %>
 
       <% if vote.stance == "sponsor" %>
         <% header == "Sponsored Senate Bill " %>
         <% if bill.supports_gun_control == "yes" %>
-          <% type="success" %>
+          <% icon="thumbs-up" %>
         <% end %>
         <% if bill.supports_gun_control == "no" %>
-          <% type="danger" %>
+          <% icon="thumbs-down" %>
         <% end %>
       <% end %>
 
       <% if vote.stance == "cosponsor" %>
         <% header = "Coponsored Senate Bill " %>
         <% if bill.supports_gun_control == "yes" %>
-          <% type="success" %>
+          <% icon="thumbs-up" %>
         <% end %>
         <% if bill.supports_gun_control == "no" %>
-          <% type="danger" %>
+          <% icon="thumbs-down" %>
         <% end %>
       <% end %>
 
       <% if vote.stance == "against" %>
         <% header = "Voted against Senate Bill " %>
         <% if bill.supports_gun_control == "no" %>
-          <% type="success" %>
+          <% icon="thumbs-up" %>
         <% end %>
         <% if bill.supports_gun_control == "yes" %>
-          <% type="danger" %>
+          <% icon="thumbs-down" %>
         <% end %>
       <% end %>
-      <div class = "card border-<%= type %>">
-        <div class="card-header"><%= header %> <%= bill.number %></div>
+      <div class = "card border_orange">
+        <div class="card-header border_orange"><h3><%= fa_icon "#{icon}", right: false %> <%= header%> <%= bill.number %> </h3></div>
         <div class="card-body">
+
           <p><strong>Status: </strong><%= bill.status %></p>
           <p><strong>Summary: </strong> <%= bill.summary %> </p>
           <p><strong>Official Position on Bill: </strong><%if vote.position == nil || vote.position == "" %>None Specified<% else %><%=vote.position %><%end%></p>
-          <%= link_to "View Bill", bill , class: "btn btn-primary btn-block" %>
         </div>
       </div>
     <% end %>

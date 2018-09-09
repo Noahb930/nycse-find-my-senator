@@ -24,7 +24,7 @@
     <h4>Beliefs Regarding Gun Control:</h4>
     <% unless @senator.beliefs.blank? %>
     <% beliefs = @senator.beliefs.split("-").drop(1) %>
-<ul>
+<ul id="beliefs">
 
   <% beliefs.each do |belief| %>
   <li><%= belief%></li>
