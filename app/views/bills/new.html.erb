@@ -13,13 +13,17 @@
     </div>
   <% end %>
   <div class = "form-row">
-    <div class = "form-group col-sm-4">
+    <div class = "form-group col-sm-3">
       <%= form.label(:number,"Legislation Number:") %>
       <%= form.text_field(:number, class: "form-control") %>
     </div>
-    <div class = "form-group col-sm-4">
+    <div class = "form-group col-sm-3">
+      <%= form.label(:shorthand, "Shorthand Name:") %></th>
+      <%= form.text_field(:shorthand, class: "form-control") %>
+    </div>
+    <div class = "form-group col-sm-3">
       <% sessions = []
-      50.times do |i|
+      10.times do |i|
         start_year = 2018 - i
         end_year = start_year + 1
         session = "#{start_year}-#{end_year}"
@@ -29,7 +33,7 @@
       <%= form.label(:session, "Session:") %></th>
       <%= form.select :session, sessions, {}, { :class => 'form-control' }%>
     </div>
-    <div class = "form-group col-sm-4">
+    <div class = "form-group col-sm-3">
       <%= form.label(:session, "Status:") %></th>
       <%= form.select :status, ["Select Status","Stricken","Introduced","In Committee","On Floor Calendar","Passed Senate","Passed Assembly","Passed Senate and Assembly","Delivered To Governor","Signed By Governor","Vetoed By Governor"], {}, { :class => 'form-control' }%>
     </div>
