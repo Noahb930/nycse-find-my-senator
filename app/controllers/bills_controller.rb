@@ -86,7 +86,7 @@ class BillsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_params
-      params.require(:bill).permit(:number, :status, :session, :summary, :supports_gun_control , :url)
+      params.require(:bill).permit(:number, :status, :session, :summary, :shorthand, :supports_gun_control , :url)
     end
 
     def authenticate
