@@ -109,7 +109,7 @@
       <% end %>
 
       <% if vote.stance == "cosponsor" %>
-        <% header = "Coponsored Senate Bill " %>
+        <% header = "Cosponsored Senate Bill " %>
         <% if bill.supports_gun_control == "yes" %>
           <% icon="thumbs-up" %>
         <% end %>
@@ -129,7 +129,7 @@
       <% end %>
       <div class = "card border_orange">
         <div class="card-header border_orange"><h3><%= fa_icon "#{icon}", right: false %> <%= header%> <%= bill.number %> - <%= bill.shorthand %></h3></div>
-        <div class="card-body">
+        <div class="card-body left">
 
           <p><strong>Status: </strong><%= bill.status %></p>
           <p><strong>Summary: </strong> <%= bill.summary %> </p>
