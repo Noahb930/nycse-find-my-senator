@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
+require 'sendgrid-ruby'
 class SenatorsController < ApplicationController
   before_action :set_senator, only: [:show, :edit, :update, :destroy]
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
@@ -18,7 +19,21 @@ class SenatorsController < ApplicationController
       redirect_to "/senators/#{senator[0].id}"
     end
   end
-
+  def mail
+    @senator =  Senator.find(params[:id])
+    from_email = params[:from_email]
+    from = SendGrid::Email.new(email: from_email)
+    to = SendGrid::Email.new(email: @senator.email)
+    subject = params[:subject]
+    content = SendGrid::Content.new(type: 'text/plain', value: "Dear Senator #{@senator.name},\n #{params[:message]} \nSincerely,\n #{params[:name]}")
+    mail = SendGrid::Mail.new(from, subject, to, content)
+    puts mail.to_json
+    sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    response = sg.client.mail._('send').post(request_body: mail.to_json)
+    puts response.status_code
+    puts response.body
+    puts response.headers
+  end
   # GET /senators
   # GET /senators.json
   def index
@@ -59,6 +74,9 @@ class SenatorsController < ApplicationController
   def admin_donations
     @senator = Senator.find(params[:id])
     @donation = Donation.new
+  end
+  def contact
+    @senator = Senator.find(params[:id])
   end
   # POST /senators
   # POST /senators.json
