@@ -3,7 +3,7 @@
 <header>
 <h1><%= @senator.name%> <%= @senator.party%> - <%= @senator.district%></h1>
 </header>
-<div class="card text-center center border_orange" id="senator_card">
+<div class="card text-center center border_orange rounded" id="senator_card">
   <div class="card-header border_orange">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
@@ -21,7 +21,7 @@
     </ul>
   </div>
   <div class="card-body">
-    <div class="inner narrow">
+    <div class="inner narrow center">
       <br>
       <form method="post">
         <%= token_tag %>
@@ -61,6 +61,7 @@
           </ul>
         </div>
       </form>
+      <br>
     </div>
   </div>
 </div>
