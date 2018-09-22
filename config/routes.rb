@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     resources :lobbyists
     get '/bills/', to: 'bills#admin_index'
     get '/bills/:id', to: 'bills#admin_show'
-    resources :senators, except: [:index, :show, :find, :destroy, :new, :create, :destroy_all]
+    resources :senators, except: [:index, :show, :find, :destroy, :new, :create, :destroy_all, :contact]
     get '/senators/', to: 'senators#admin_index'
     get '/senators/:id', to: 'senators#admin_show'
     get '/senators/:id/votes', to: 'senators#admin_votes'
@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   post '/', to: 'senators#find'
   get '/senators/:id/votes', to: 'senators#votes'
   get '/senators/:id/donations', to: 'senators#donations'
+  get '/senators/:id/contact', to: 'senators#contact'
+  post '/senators/:id/contact', to: 'senators#mail'
 end

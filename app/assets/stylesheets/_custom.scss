@@ -46,15 +46,6 @@ header:before {
 img {
     border-radius: 10px;
 }
-form {
-  border-style: solid;
-  border-width: 2px;
-  border-color: #888;
-  border-radius: 10px;
-  padding: 15px;
-  background-color: #eee;
-  margin:50px;
-}
 #senator_card{
   width:850px;
   margin-top: 50px;
@@ -97,4 +88,86 @@ text-align: left;}
 *,a, a:hover{color: #3f3f3f}
 .left{
   text-align: left;
+}
+.inner.narrow {
+  max-width: 48rem;
+}
+button,
+.button {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+	-moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+	-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+	-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+	transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+	border-radius: 4px;
+	border: 0;
+	cursor: pointer;
+	display: inline-block;
+	font-family: "Raleway", Helvetica, sans-serif;
+	font-weight: 800;
+	font-size: 0.75rem;
+	height: 3rem;
+	line-height: 3.075rem;
+	padding: 0 2.5rem;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	text-transform: uppercase;
+	letter-spacing: 0.025rem;
+}
+
+
+button,
+.button {
+	background-color: #e56f44;
+	color: #ffffff !important;
+}
+
+	button:hover,
+	.button:hover {
+		background-color: #e8805a;
+		color: #ffffff !important;
+	}
+
+	button:active,
+	.button:active {
+		background-color: #e25e2e;
+	}
+  ul.actions {
+    cursor: default;
+    list-style: none;
+    padding-left: 0;
+  }
+  input, textarea {
+  	color: #3f3f3f;
+}
+  input[type="text"], textarea {
+  	border-color: rgba(143, 143, 143, 0.25);
+  }
+
+  	input[type="text"]:focus {
+  		border-color: #e56f44;
+  		box-shadow: 0 0 0 1px #e56f44;
+  	}
+    .form-control:focus{
+      outline: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      border-color: #e56f44;
+      box-shadow: 0 0 0 1px #e56f44;
+    }
+    input[type="text"]:invalid{
+      box-shadow: none;
+    }
+
+  input[type="text"] {
+    height: 3rem;
+  }
+
+  textarea {
+    width:100%;
+    border-radius: 4px;
 }
