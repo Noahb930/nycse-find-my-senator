@@ -11,6 +11,7 @@ gem 'jquery-rails'
 gem 'popper_js'
 gem 'font-awesome-rails'
 gem 'sendgrid-ruby'
+gem 'mechanize'
 gem 'dotenv-rails', groups: [:development, :test]
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
