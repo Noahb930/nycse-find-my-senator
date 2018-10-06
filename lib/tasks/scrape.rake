@@ -78,7 +78,7 @@ namespace :scrape do
           # end
           year.each do |y|
             unless y.to_i>2018
-              if ((name.include? "GUN" )|| (name.include? "RIFLE") || (name.include? "NRA")) && (name.exclude? "GUN HILL")
+              if (name.include? "GUN " )|| (name.include? "RIFLE ") || (name.include? "NRA ")
                 puts name
                 lobbyist = Lobbyist.new(name: name)
                 unless Lobbyist.where(name: name).length >0
