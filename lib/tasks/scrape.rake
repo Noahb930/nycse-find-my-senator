@@ -37,6 +37,16 @@ namespace :scrape do
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
     form = form_page.forms[1]
     Senator.all.each do |senator|
+      puts "################################################"
+      puts "################################################"
+      puts "################################################"
+      puts "################################################"
+      puts "################################################"
+      puts "################################################"
+      puts "################################################"
+      puts "################################################"
+      puts "################################################"
+      puts senator.name
       last_name = ""
       if senator.name.split(" ").last[-1] == "."
         names = senator.name.split(" ")
@@ -59,11 +69,12 @@ namespace :scrape do
         donations_page = link.click
         rows = donations_page.search("tr")
         rows[1..rows.length - 2].each do |row|
+          year = row.search("td").children.text.scan(/19|20\d{2}\b/)
           name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
           value = "$" + row.search("td").children.text.scan(/(\d+\,)?(\d+\.\d\d)/).join
           Lobbyist.all.each do |lobbyist|
             if lobbyist.name == name
-              donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value)
+              donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: year)
               donation.save()
               senator.donations.push(donation)
               senator.save
