@@ -54,6 +54,7 @@ namespace :scrape do
       form.field_with(:name => 'date_from').value = "1/1/1950"
       form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
       form.field_with(:name => 'AMOUNT_from').value = 0
+            form.field_with(:name => 'CATEGORY_IN').value = "OTHER"
       form.field_with(:name => 'AMOUNT_to').value = 10000
       funds_page = agent.submit(form)
       links = funds_page.links[3..funds_page.links.length-2]
@@ -64,28 +65,28 @@ namespace :scrape do
           year = row.search("td").children.text.scan(/19|20\d{2}\b/)
           name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
           value = "$" + row.search("td").children.text.scan(/(\d+\,)?(\d+\.\d\d)/).join
-          Lobbyist.all.each do |lobbyist|
-            if name.include? lobbyist.name
-              puts lobbyist.name
-              donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: year)
-              donation.save()
-              senator.donations.push(donation)
-              senator.save
-              lobbyist.donations.push(donation)
-              lobbyist.save()
-            end
-          end
-          # if name.include? "gun" || name.include? "rifle"
-          #   puts lobbyist.name
-          #   lobbyist = Lobbyist.new(name: name)
-          #   lobbyist.save()
-          #   donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: year)
-          #   donation.save()
-          #   senator.donations.push(donation)
-          #   senator.save
-          #   lobbyist.donations.push(donation)
-          #   lobbyist.save()
+          # Lobbyist.all.each do |lobbyist|
+          #   if name.include? lobbyist.name
+          #     puts lobbyist.name
+          #     donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: year)
+          #     donation.save()
+          #     senator.donations.push(donation)
+          #     senator.save
+          #     lobbyist.donations.push(donation)
+          #     lobbyist.save()
+          #   end
           # end
+          if ((name.include? "GUN" )|| (name.include? "RIFLE") || (name.include? "NRA")) && (name.exclude? "GUN HILL")
+            puts name
+            lobbyist = Lobbyist.new(name: name)
+            lobbyist.save()
+            donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: year)
+            donation.save()
+            senator.donations.push(donation)
+            senator.save
+            lobbyist.donations.push(donation)
+            lobbyist.save()
+          end
         end
       end
     end
