@@ -36,14 +36,7 @@ namespace :scrape do
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
     form = form_page.forms[1]
-    Senator.all.each do |senator|
-      puts "################################################"
-      puts "################################################"
-      puts "################################################"
-      puts "################################################"
-      puts "################################################"
-      puts "################################################"
-      puts "################################################"
+    Senator.where("party ~* ?", "R").each do |senator|
       puts "################################################"
       puts "################################################"
       puts senator.name
@@ -58,11 +51,10 @@ namespace :scrape do
         last_name = senator.name.split(" ").last
       end
       form.field_with(:name => 'NAME_IN').value = last_name
-      form.field_with(:name => 'date_from').value = "1/1/1951"
+      form.field_with(:name => 'date_from').value = "1/1/1950"
       form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
       form.field_with(:name => 'AMOUNT_from').value = 0
       form.field_with(:name => 'AMOUNT_to').value = 10000
-      form.field_with(:name => 'CATEGORY_IN').value = "OTHER"
       funds_page = agent.submit(form)
       links = funds_page.links[3..funds_page.links.length-2]
       links.each do |link|
@@ -73,7 +65,8 @@ namespace :scrape do
           name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
           value = "$" + row.search("td").children.text.scan(/(\d+\,)?(\d+\.\d\d)/).join
           Lobbyist.all.each do |lobbyist|
-            if lobbyist.name == name
+            if name.include? lobbyist.name
+              puts lobbyist.name
               donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: year)
               donation.save()
               senator.donations.push(donation)
@@ -82,6 +75,17 @@ namespace :scrape do
               lobbyist.save()
             end
           end
+          # if name.include? "gun" || name.include? "rifle"
+          #   puts lobbyist.name
+          #   lobbyist = Lobbyist.new(name: name)
+          #   lobbyist.save()
+          #   donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: year)
+          #   donation.save()
+          #   senator.donations.push(donation)
+          #   senator.save
+          #   lobbyist.donations.push(donation)
+          #   lobbyist.save()
+          # end
         end
       end
     end
