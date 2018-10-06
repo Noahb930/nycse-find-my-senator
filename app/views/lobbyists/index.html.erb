@@ -18,7 +18,7 @@
         <td><%= lobbyist.description %></td>
         <td><%= link_to 'Show', lobbyist %></td>
         <td><%= link_to 'Edit', edit_lobbyist_path(lobbyist) %></td>
-        <td><%= link_to 'Destroy', lobbyist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', lobbyist, method: :delete, data: { confirm: "Are you sure that you want to delete #{lobbyist.name}" } %></td>
       </tr>
     <% end %>
   </tbody>
