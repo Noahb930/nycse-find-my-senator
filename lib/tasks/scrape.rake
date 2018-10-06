@@ -81,7 +81,7 @@ namespace :scrape do
               if ((name.include? "GUN" )|| (name.include? "RIFLE") || (name.include? "NRA")) && (name.exclude? "GUN HILL")
                 puts name
                 lobbyist = Lobbyist.new(name: name)
-                unless Lobbyist.where(name: name)
+                unless Lobbyist.where(name: name).length >0
                   lobbyist.save()
                 else
                   lobbyist = Lobbyist.where(name: name)
