@@ -84,7 +84,7 @@ namespace :scrape do
                 unless Lobbyist.where(name: name).length >0
                   lobbyist.save()
                 else
-                  lobbyist = Lobbyist.where(name: name)
+                  lobbyist = Lobbyist.where(name: name)[0]
                 end
                 donation = Donation.new(senator_id: senator.id, lobbyist_id: lobbyist.id, value: value, year: y)
                 donation.save()
