@@ -36,7 +36,7 @@ namespace :scrape do
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
     form = form_page.forms[1]
-    Senator.where("party ~* ?", "R").each do |senator|
+    Senator.all.each do |senator|
       puts "################################################"
       puts "################################################"
       puts senator.name
