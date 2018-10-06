@@ -58,7 +58,7 @@ namespace :scrape do
         last_name = senator.name.split(" ").last
       end
       form.field_with(:name => 'NAME_IN').value = last_name
-      form.field_with(:name => 'date_from').value = "1/1/1901"
+      form.field_with(:name => 'date_from').value = "1/1/1951"
       form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
       form.field_with(:name => 'AMOUNT_from').value = 0
       form.field_with(:name => 'AMOUNT_to').value = 10000
