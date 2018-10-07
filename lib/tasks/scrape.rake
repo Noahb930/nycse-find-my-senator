@@ -62,7 +62,7 @@ namespace :scrape do
         donations_page = link.click
         rows = donations_page.search("tr")
         rows[1..rows.length - 2].each do |row|
-          year = row.search("td").children.text.scan(/19|20\d{2}\b/)
+          year = row.search("td").children.text.scan(/(?:19|20)\d{2}\b/)
           name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
           value = "$" + row.search("td").children.text.scan(/(\d+\,)?(\d+\.\d\d)/).join
           # Lobbyist.all.each do |lobbyist|
