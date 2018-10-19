@@ -17,7 +17,7 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create vote" do
     assert_difference('Vote.count') do
-      post votes_url, params: { vote: { bill_id: @vote.bill_id, position: @vote.position, senator_id: @vote.senator_id } }
+      post votes_url, params: { vote: { bill_id: @vote.bill_id, position: @vote.position, representative_id: @vote.representative_id } }
     end
 
     assert_redirected_to vote_url(Vote.last)
@@ -34,7 +34,7 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update vote" do
-    patch vote_url(@vote), params: { vote: { bill_id: @vote.bill_id, position: @vote.position, senator_id: @vote.senator_id } }
+    patch vote_url(@vote), params: { vote: { bill_id: @vote.bill_id, position: @vote.position, representative_id: @vote.representative_id } }
     assert_redirected_to vote_url(@vote)
   end
 

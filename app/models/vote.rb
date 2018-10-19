@@ -1,4 +1,4 @@
 class Vote < ApplicationRecord
   belongs_to :bill
-  belongs_to :senator
+  belongs_to :representative
 end

@@ -11,17 +11,17 @@ Rails.application.routes.draw do
     resources :lobbyists
     get '/bills/', to: 'bills#admin_index'
     get '/bills/:id', to: 'bills#admin_show'
-    resources :senators, except: [:index, :show, :find, :destroy, :new, :create, :destroy_all, :contact]
-    get '/senators/', to: 'senators#admin_index'
-    get '/senators/:id', to: 'senators#admin_show'
-    get '/senators/:id/votes', to: 'senators#admin_votes'
-    get '/senators/:id/donations', to: 'senators#admin_donations'
+    resources :representatives, except: [:index, :show, :find, :destroy, :new, :create, :destroy_all, :contact]
+    get '/representatives/', to: 'representatives#admin_index'
+    get '/representatives/:id', to: 'representatives#admin_show'
+    get '/representatives/:id/votes', to: 'representatives#admin_votes'
+    get '/representatives/:id/donations', to: 'representatives#admin_donations'
   end
-  resources :senators, only: [:index, :show]
+  resources :representatives, only: [:index, :show]
   root 'static_pages#home'
-  post '/', to: 'senators#find'
-  get '/senators/:id/votes', to: 'senators#votes'
-  get '/senators/:id/donations', to: 'senators#donations'
-  get '/senators/:id/contact', to: 'senators#contact'
-  post '/senators/:id/contact', to: 'senators#mail'
+  post '/', to: 'representatives#find'
+  get '/representatives/:id/votes', to: 'representatives#votes'
+  get '/representatives/:id/donations', to: 'representatives#donations'
+  get '/representatives/:id/contact', to: 'representatives#contact'
+  post '/representatives/:id/contact', to: 'representatives#mail'
 end

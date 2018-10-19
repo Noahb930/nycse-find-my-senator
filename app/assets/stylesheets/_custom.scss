@@ -19,6 +19,16 @@ header:before {
 i{
   vertical-align: middle;
 }
+#representative_card{
+  margin-top: 20px;
+  text-align: center;
+  width: 825px;
+  border-radius: 10px;
+}
+#representative_card > .card-body{
+  height: 400px;
+  overflow: scroll
+}
 .votes-container{
   border-width: 2px;
   border-style: solid;

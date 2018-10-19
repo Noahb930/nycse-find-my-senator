@@ -1,4 +1,4 @@
 class Donation < ApplicationRecord
   belongs_to :lobbyist
-  belongs_to :senator
+  belongs_to :representative
 end
