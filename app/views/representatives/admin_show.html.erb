@@ -1,0 +1,46 @@
+
+<center>
+  <header>
+<h1><%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
+</header>
+<div class="card text-center center border_orange" id="representative_card">
+  <div class="card-header border_orange">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a  id="tab-1" class="nav-link active" href="#">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/representatives/<%= @representative.id%>/votes">Voting Record</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/representatives/<%= @representative.id%>/donations">Campaign Finances</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/representatives/<%= @representative.id%>/contact">Contact</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <img align="left" src="<%= @representative.img %>" ></img>
+    <div>
+    <h3>NYCSE Rating: <%= @representative.rating%></h2>
+    <h4>Beliefs Regarding Gun Control:</h4>
+
+        <% unless @representative.beliefs.blank? %>
+        <% beliefs = @representative.beliefs.split("-").drop(1) %>
+    <ul id="beliefs">
+
+      <% beliefs.each do |belief| %>
+      <li><%= belief%></li>
+      <% end %>
+
+    </ul>
+        <% end %>
+    </div>
+
+
+  </div>
+</div>
+</center>
+<%= link_to 'Edit', edit_representative_path(@representative) %> |
+<%= link_to 'Back', representatives_path %>

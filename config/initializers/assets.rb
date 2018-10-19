@@ -8,7 +8,7 @@ Rails.application.config.assets.version = '1.0'
 # Add Yarn node_modules folder to the asset load path.
 Rails.application.config.assets.paths << Rails.root.join('node_modules')
 Rails.application.config.assets.precompile += %w( static_pages.css )
-Rails.application.config.assets.precompile += %w( senators.css )
+Rails.application.config.assets.precompile += %w( representatives.css )
 Rails.application.config.assets.precompile += %w( bills.css )
 Rails.application.config.assets.precompile += %w( lobbyists.css )
 Rails.application.config.assets.precompile += %w( donations.css )

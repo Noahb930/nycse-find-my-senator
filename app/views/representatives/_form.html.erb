@@ -1,0 +1,63 @@
+<%= form_with(model: representative, local: true) do |form| %>
+  <% if representative.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(representative.errors.count, "error") %> prohibited this representative from being saved:</h2>
+
+      <ul>
+      <% representative.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class ="form-row">
+    <div class="form-group col-sm-6">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+    <div class="form-group col-sm-6">
+      <%= form.label :email %>
+      <%= form.text_field :email, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-sm-4">
+      <%= form.label :party %>
+      <%= form.text_field :party, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-sm-4">
+      <%= form.label :district %>
+      <%= form.text_field :district, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-sm-4">
+      <%= form.label :rating %>
+      <%= form.text_field :rating, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-row>"
+    <div class="form-group col-sm-12">
+      <%= form.label :url %>
+      <%= form.text_field :url, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-row>"
+    <div class="form-group col-sm-12">
+      <%= form.label :img %>
+      <%= form.text_field :img, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-row>"
+    <div class="form-group col-sm-12">
+      <%= form.label :beliefs %>
+      <%= form.text_area :beliefs, class: "form-control" %>
+    </div>
+  </div>
+<br>
+  <div class="form-row>"
+    <div class="actions">
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
+  </div>
+<% end %>

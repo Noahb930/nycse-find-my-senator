@@ -25,13 +25,13 @@ class DonationsController < ApplicationController
   # POST /donations.json
   def create
     @donation = Donation.new(donation_params)
-    @senator = Senator.find(params[:donation][:senator_id])
-    @senator.donations.push(@donation)
+    @representative = Representative.find(params[:donation][:representative_id])
+    @representative.donations.push(@donation)
     @lobbyist = Lobbyist.find(params[:donation][:lobbyist_id])
     @lobbyist.donations.push(@donation)
     respond_to do |format|
       if @donation.save
-        format.html { redirect_to "/admin/senators/#{params[:donation][:senator_id]}/donations", notice: 'Donation was successfully created.' }
+        format.html { redirect_to "/admin/representatives/#{params[:donation][:representative_id]}/donations", notice: 'Donation was successfully created.' }
         format.json { render :show, status: :created, location: @donation }
       else
         format.html { render :new }
@@ -72,6 +72,6 @@ class DonationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def donation_params
-      params.require(:donation).permit(:value, :lobbyist_id, :senator_id, :year)
+      params.require(:donation).permit(:value, :lobbyist_id, :representative_id, :year)
     end
 end

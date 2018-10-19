@@ -43,7 +43,7 @@ class VotesController < ApplicationController
   def update
     respond_to do |format|
       if @vote.update(vote_params)
-        format.html { redirect_to "/admin/senators/#{@vote.senator_id}/votes"}
+        format.html { redirect_to "/admin/representatives/#{@vote.representative_id}/votes"}
         format.json { render :show, status: :ok, location: @vote }
       else
         format.html { render :edit }
@@ -70,7 +70,7 @@ class VotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def vote_params
-      params.require(:vote).permit(:position, :bill_id, :senator_id, :stance)
+      params.require(:vote).permit(:position, :bill_id, :representative_id, :stance)
     end
     def authenticate
       authenticate_or_request_with_http_digest do |username|

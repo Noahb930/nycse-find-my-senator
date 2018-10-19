@@ -33,14 +33,14 @@ class BillsController < ApplicationController
 
     respond_to do |format|
       if @bill.save
-        Senator.all.each do |senator|
-          puts "senator"
-            vote = Vote.new(bill_id:@bill.id, senator_id:senator.id, stance:"unknown")
+        Representative.all.each do |representative|
+          puts "representative"
+            vote = Vote.new(bill_id:@bill.id, representative_id:representative.id, stance:"unknown")
             vote.save();
             @bill.votes.push(vote)
             @bill.save()
-            senator.votes.push(vote)
-            senator.save()
+            representative.votes.push(vote)
+            representative.save()
         end
         format.html { redirect_to @bill, notice: 'Bill was successfully created.' }
         format.json { render :show, status: :created, location: @bill }

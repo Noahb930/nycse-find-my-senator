@@ -1,0 +1,22 @@
+<div class="container-fluid votes-container">
+  <h2 class="text-secondary">Representatives</h2>
+  <% Representative.all.each_slice(6) do |representatives| %>
+    <div class = "row card-deck" >
+      <% representatives.each do |representative| %>
+
+        <div class="card col-md-2 border-secondary text-secondary" >
+          <img class="card-img-top" src="<%= representative.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= representative.name %></h4>
+
+          <p> <%= representative.party %> - <%= representative.district %> </p>
+          <div class ="white-text">
+           <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
+           <%= link_to "Edit", representative , class: "btn btn-secondary btn-block" %>
+           <%= link_to 'Destroy', representative, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-block btn-danger" %>
+
+                    </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

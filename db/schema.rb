@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_17_215429) do
+ActiveRecord::Schema.define(version: 2018_10_19_002850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,12 +25,13 @@ ActiveRecord::Schema.define(version: 2018_09_17_215429) do
     t.string "url"
     t.string "supports_gun_control"
     t.string "shorthand"
+    t.string "location"
   end
 
   create_table "donations", force: :cascade do |t|
     t.string "value"
     t.string "lobbyist_id"
-    t.string "senator_id"
+    t.string "representative_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "year"
@@ -43,7 +44,7 @@ ActiveRecord::Schema.define(version: 2018_09_17_215429) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "senators", force: :cascade do |t|
+  create_table "representatives", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "party"
@@ -54,12 +55,13 @@ ActiveRecord::Schema.define(version: 2018_09_17_215429) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "profession"
   end
 
   create_table "votes", force: :cascade do |t|
     t.string "position"
     t.string "bill_id"
-    t.string "senator_id"
+    t.string "representative_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "stance"
