@@ -4,20 +4,22 @@ require 'sendgrid-ruby'
 class RepresentativesController < ApplicationController
   before_action :set_representative, only: [:show, :edit, :update, :destroy]
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
-  before_action :authenticate, except: [:index, :show, :find, :votes, :donations]
+  before_action :authenticate, except: [:index, :show, :find, :votes, :donations, :contact]
   def find
     address = params[:address]
     city = params[:city]
     zipcode = params[:zipcode]
+    @representatives = []
     doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zipcode}"))
     name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
     if name==""
       flash[:danger] = "Address is not valid, please try again"
       redirect_to '/'
-    else
-      representative = Representative.where(name: name)
-      redirect_to "/representatives/#{representative[0].id}"
     end
+    doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zipcode}"))
+    name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
+    @representatives.push(Representative.where(name: name)[0])
+    render 'show'
   end
   def mail
     @representative =  Representative.find(params[:id])

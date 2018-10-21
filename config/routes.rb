@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   end
   resources :representatives, only: [:index, :show]
   root 'static_pages#home'
+  get '/show/:addr/:city/:zip', to: "static_pages#show"
   post '/', to: 'representatives#find'
   get '/representatives/:id/votes', to: 'representatives#votes'
   get '/representatives/:id/donations', to: 'representatives#donations'
