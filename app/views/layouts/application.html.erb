@@ -9,11 +9,97 @@
     <%= stylesheet_link_tag params[:controller] %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
-
   </head>
 
 
-<body>
-    <%= yield %>
+<body><!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+                    <div class="root-nav">
+					<header id="header">
+
+						<!-- Logo -->
+							<div class="logo">
+								<a href="http://nycsaysenough.org"><strong>New York City Says Enough </strong> </a>
+							</div>
+
+						<!-- Nav -->
+
+							<nav id="nav">
+								<ul>
+									<li >
+										<a href="http://nycsaysenough.org">Home</a>
+									</li>
+
+									<li>
+										 <a href= "http://nycsaysenough.org/ourcurrentactions.html"> Our Current Actions </a>
+									</li>
+
+                                    					<li>
+										<a href="http://nycsaysenough.org/Contact.html" >Contact</a>
+									</li>
+									<li >
+										<a  href="#"> <%= fa_icon "angle-down", right: true, text: "Join Our Team"%>
+										</a>
+										<ul>
+											<li>
+												<a href="https://docs.google.com/forms/d/e/1FAIpQLSeY6B8TRJhHWaoFsHnkOEYlqWSOB4u1gB_LnOAMTNxHWLB5zw/viewform?usp=sf_link"> Register a chapter </a>
+											</li>
+
+											<li>
+												<a href= "https://docs.google.com/forms/d/e/1FAIpQLSd5AswhY5-bsND6I3oz1jVz2oHzzPuskz_UXsQtiA-Oc1O0RQ/viewform?usp=sf_link"> Sign up to be a volunteer </a>
+											</li>
+
+											<li>
+												<a href= "https://goo.gl/forms/6CJv6UCYRaUxUcDG3"> Sign up to be a member </a>
+											</li>
+
+											<li>
+												<a href= "https://www.nycsaysenough.org/FAQ.html"> FAQ for joining NYCSE </a>
+											</li>
+										</ul>
+										<li class="current">
+											<a href= "#"> 										<a  href="#"> <%= fa_icon "angle-down", right: true, text: "Resources"%> </a>
+											<ul>
+												<li>
+													<a href= "https://docs.google.com/document/d/1aA5soCCDtTlJQUWcpptYdBgupSw_w5C11EK4YVSMnAg/edit?usp=sharing " target="_blank"> Chapter guide </a>
+												</li>
+
+												<li>
+													<a href= "https://docs.google.com/document/d/1BCTM1-Qu3f2i8bEdYWPB7NvuIzqgxl2qTw-NVUXRSf4/edit?usp=sharing " target="_blank"> How to be an activist guide </a>
+												</li>
+											</ul>
+
+
+									<li>
+										<a href="http://nycsaysenough.org/gallery/gallery.html"> Gallery</a>
+
+									</li>
+
+
+
+								</ul>
+							</nav>
+
+					</header>
+        </div>
+      </div>
+	<div id="wrapper">
+  					<%= yield %>
+  					<footer id="footer">
+                          <p class="copyright">
+  						© NYC Says Enough. All rights reserved. </p>
+  					</footer>
+
+  			</div>
+  			<script src="assets/js/jquery.min.js"></script>
+  			<script src="assets/js/jquery.dropotron.min.js"></script>
+  			<script src="assets/js/jquery.scrollex.min.js"></script>
+  			<script src="assets/js/jquery.scrolly.min.js"></script>
+  			<script src="assets/js/skel.min.js"></script>
+  			<script src="assets/js/util.js"></script>
+  			<script src="assets/js/main.js"></script>
+
 </body>
 </html>
