@@ -1,0 +1,50 @@
+<center>
+  <header>
+<h1><%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
+</header>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+<div class="card text-center center border_orange" id="representative_card">
+  <div class="card-header border_orange">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" id="tab-1" href="/representatives/<%= @representative.id%>">Overview</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/representatives/<%= @representative.id%>/votes">Voting Record</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Campaign Finances</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/representatives/<%= @representative.id%>/contact">Contact</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <% donations = @representative.donations %>
+    <% total = 0 %>
+    <% donations.each do |donation| %>
+      <% value = donation.value %>
+      <% total  = total + donation.value[1..-1].to_i %>
+    <% end %>
+    <% if total > 0 %>
+    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "Money Recieved From Gun Lobbyists: $#{total}"%></h4>
+<glyph>
+    <% else %>
+    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "No Money Recieved From Gun Lobbyists!!!"%></h4>
+    <%end%>
+    <% donations.each do |donation| %>
+      <% lobbyist = Lobbyist.find(donation.lobbyist_id) %>
+      <div class = "card border_orange">
+        <div class="card-header border_orange">Recieved <%= donation.value %> from <%= lobbyist.name %></div>
+        <div class="card-body">
+          <p><strong>Year: </strong><%= donation.year %></p>
+          <p><strong>Description: </strong> <%= lobbyist.description %> </p>
+        </div>
+      </div>
+      <br>
+    <% end %>
+  </div>
+
+</center>
