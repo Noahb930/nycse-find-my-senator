@@ -6,9 +6,9 @@ class RepresentativesController < ApplicationController
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
   before_action :authenticate, except: [:index, :show, :find, :votes, :donations, :contact]
   def find
-    address = params[:address]
-    city = params[:city]
-    zipcode = params[:zipcode]
+    address=params[:address]
+    city=params[:city]
+    zipcode=params[:zipcode]
     @representatives = []
     doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zipcode}"))
     name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
@@ -16,10 +16,13 @@ class RepresentativesController < ApplicationController
       flash[:danger] = "Address is not valid, please try again"
       redirect_to '/'
     end
-    doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zipcode}"))
-    name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
+    redirect_to Representative.where(name: name)[0]
     @representatives.push(Representative.where(name: name)[0])
-    render 'show'
+    # respond_to do |format|
+    #   format.js {render layout: false} # Add this line to you respond_to block
+    #   format.html { render :view}
+    #   format.json { render :view}
+    # end
   end
   def mail
     @representative =  Representative.find(params[:id])
@@ -44,8 +47,7 @@ class RepresentativesController < ApplicationController
 
   # GET /representatives/1
   # GET /representatives/1.json
-  def show
-  end
+
   def admin_index
     @representatives = Representative.all
   end
