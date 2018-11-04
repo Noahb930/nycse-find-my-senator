@@ -1,9 +1,18 @@
 @import "bootstrap";
 @import "font-awesome";
 /* universal */
-body{
-  background-color: #F3F3F3;
+html {
+	font-size: 100%;
 }
+body {
+	background-color: #3f3f3f !important;
+  -ms-overflow-style: scrollbar;
+}
+#wrapper{
+  background-color: #F3F3F3;
+  padding-top: 20px
+}
+
 header{
   margin-top:75px;
 }
@@ -26,7 +35,7 @@ i{
   border-radius: 10px;
 }
 #representative_card > .card-body{
-  height: 400px;
+  height: 420px;
   overflow: scroll
 }
 .votes-container{
@@ -90,6 +99,7 @@ img{
   border-bottom-color: #fff;
   border-left-color: #e56f44;
   border-width:2px;
+  margin-top:3px;
   border-bottom-style:solid
 }
 #tab-1{
@@ -803,28 +813,7 @@ button,
 
   /* Footer */
 
-  #footer {
-  	padding: 3.5rem 0 1.5rem 0 ;
-  	color: #bfbfbf;
-  	text-align: center;
-  	background-color: #fff;
-  }
 
-  	@media screen and (max-width: 1280px) {
-
-  		#footer {
-  			padding: 3rem 3rem 1rem 3rem ;
-  		}
-
-  	}
-
-  	@media screen and (max-width: 736px) {
-
-  		#footer {
-  			padding: 2rem 1.75rem 0.1rem 1.75rem ;
-  		}
-
-  	}
 
   /* Nav Panel */
 
@@ -845,27 +834,18 @@ button,
   	height: 100%;
   }
 
-}
-#footer {
-  padding: 3.5rem 0 1.5rem 0 ;
-  color: #bfbfbf;
-  text-align: center;
-  background-color: #fff;
-  margin-top: 50px;
-}
 
-  @media screen and (max-width: 1280px) {
-
-    #footer {
-      padding: 3rem 3rem 1rem 3rem ;
-    }
 
   }
-
-  @media screen and (max-width: 736px) {
-
-    #footer {
-      padding: 2rem 1.75rem 0.1rem 1.75rem ;
-    }
-
+  #footer {
+    padding: 3.5rem 0 1.5rem 0 ;
+    color: #bfbfbf;
+    text-align: center;
+    background-color: #fff;
+    margin-top: 50px;
+    padding: 2rem 1.75rem 0.1rem 1.75rem;
+    height: 200px;
   }
+#footer > p{
+      color: #bfbfbf;
+}

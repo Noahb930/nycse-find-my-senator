@@ -9,20 +9,45 @@ class RepresentativesController < ApplicationController
     address=params[:address]
     city=params[:city]
     zipcode=params[:zipcode]
-    @representatives = []
+    @reps = []
     doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zipcode}"))
     name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
     if name==""
       flash[:danger] = "Address is not valid, please try again"
       redirect_to '/'
     end
-    redirect_to Representative.where(name: name)[0]
-    @representatives.push(Representative.where(name: name)[0])
-    # respond_to do |format|
-    #   format.js {render layout: false} # Add this line to you respond_to block
-    #   format.html { render :view}
-    #   format.json { render :view}
-    # end
+    @reps.push(Representative.where(name: name)[0])
+    respond_to do |format|
+      format.html { render :view}
+    end
+  end
+  def show
+    @representative = Representative.find(params[:id])
+    @index = params[:index]
+    respond_to do |format|
+      format.js
+    end
+  end
+  def votes
+    @representative = Representative.find(params[:id])
+    @index = params[:index]
+    respond_to do |format|
+      format.js
+    end
+  end
+  def donations
+    @representative = Representative.find(params[:id])
+    @index = params[:index]
+    respond_to do |format|
+      format.js
+    end
+  end
+  def contact
+    @representative = Representative.find(params[:id])
+    @index = params[:index]
+    respond_to do |format|
+      format.js
+    end
   end
   def mail
     @representative =  Representative.find(params[:id])
@@ -66,22 +91,14 @@ class RepresentativesController < ApplicationController
   def edit
   end
 
-  def votes
-    @representative = Representative.find(params[:id])
-  end
   def admin_votes
-    @representative = Representative.find(params[:id])
-  end
-  def donations
     @representative = Representative.find(params[:id])
   end
   def admin_donations
     @representative = Representative.find(params[:id])
     @donation = Donation.new
   end
-  def contact
-    @representative = Representative.find(params[:id])
-  end
+
   # POST /representatives
   # POST /representatives.json
   def create

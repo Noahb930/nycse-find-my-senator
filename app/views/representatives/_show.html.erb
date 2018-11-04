@@ -7,23 +7,22 @@
   <div class="card-header border_orange">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
-        <a class="nav-link active" id = "overview_link_<%= @index %>" id="tab-1" href="#">Overview</a>
+        <a class="nav-link active" href="#">Overview</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" id = "votes_link_<%= @index %>" href="#">Voting Record</a>
+      <li>
+        <%= link_to 'Voting Record', votes_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" id = "donations_link_<%= @index %>" href="#">Campaign Finances</a>
+      <li>
+        <%= link_to 'Campaign Finances', donations_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" id = "contact_link_<%= @index %>" href="#">Contact</a>
+      <li>
+        <%= link_to 'Contact', contact_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
-    </ul>
   </div>
   <div class="card-body">
     <img align="left" src="<%= @representative.img %>" ></img>
     <div>
-    <h3>NYCSE Rating: <%= @representative.rating%></h2>
+    <h3>NYCSE Rating: <%= @representative.rating%></h3>
     <h4>Beliefs Regarding Gun Control:</h4>
     <% unless @representative.beliefs.blank? %>
     <% beliefs = @representative.beliefs.split("-").drop(1) %>
@@ -40,18 +39,4 @@
 
 
   </div>
-  <script type="text/javascript">
-    $('#overview_link_<%= @index %>').onclick = function () {
-      $("#representative_container_<%= @index %>").html("<%= escape_javascript(render partial: 'representatives/show', locals: { representative: @representative } ) %>");
-    }
-    $('#votes_link_<%= @index %>').onclick = function () {
-      $("#representative_container_<%= @index %>").html("<%= escape_javascript(render partial: 'representatives/votes', locals: { representative: @representative } ) %>");
-    }
-    $('#donations_link_<%= @index %>').onclick = function () {
-      $("#representative_container_<%= @index %>").html("<%= escape_javascript(render partial: 'representatives/donations', locals: { representative: @representative } ) %>");
-    }
-    $('#contact_link_<%= @index %>').onclick = function () {
-      $("#representative_container_<%= @index %>").html("<%= escape_javascript(render partial: 'representatives/contact', locals: { representative: @representative } ) %>");
-    } %>
-  </script>
 </center>

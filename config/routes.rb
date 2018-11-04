@@ -17,12 +17,13 @@ Rails.application.routes.draw do
     get '/representatives/:id/votes', to: 'representatives#admin_votes'
     get '/representatives/:id/donations', to: 'representatives#admin_donations'
   end
-  resources :representatives, only: [:index, :show]
   root 'static_pages#home'
   get '/show/:addr/:city/:zip', to: "static_pages#show"
   post '/', to: 'representatives#find'
-  get '/representatives/:id/votes', to: 'representatives#votes'
   get '/representatives/:id/donations', to: 'representatives#donations'
-  get '/representatives/:id/contact', to: 'representatives#contact'
   post '/representatives/:id/contact', to: 'representatives#mail'
+  get '/partials/show' => 'representatives#show', :as => 'show_representative'
+  get '/partials/votes' => 'representatives#votes', :as => 'votes_representative'
+  get '/partials/donations' => 'representatives#donations', :as => 'donations_representative'
+  get '/partials/contact' => 'representatives#contact', :as => 'contact_representative'
 end
