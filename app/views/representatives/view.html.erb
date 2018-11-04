@@ -1,5 +1,5 @@
-<% @representatives.each_with_index do |representative, index| %>
+<% @reps.each_with_index do |representative, index| %>
   <div id = "representative_container_<%= index %>">
     <%= render :partial => 'show', :locals => {:@representative => representative, :@index => index} %>
-  <div>
+  </div>
 <% end %>

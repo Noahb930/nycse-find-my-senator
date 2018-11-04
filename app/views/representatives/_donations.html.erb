@@ -1,6 +1,6 @@
 <center>
   <header>
-<h1><%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
+<h1><%= @representative.profession %> <%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
 </header>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
@@ -8,16 +8,17 @@
   <div class="card-header border_orange">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
-        <a class="nav-link" id="tab-1" href="/representatives/<%= @representative.id%>">Overview</a>
+        <%= link_to 'Overview', show_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/representatives/<%= @representative.id%>/votes">Voting Record</a>
+      <li>
+        <%= link_to 'Voting Record', votes_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
-      <li class="nav-item">
+      <li>
         <a class="nav-link active" href="#">Campaign Finances</a>
+
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/representatives/<%= @representative.id%>/contact">Contact</a>
+      <li>
+        <%= link_to 'Contact', contact_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
     </ul>
   </div>

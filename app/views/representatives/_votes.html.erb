@@ -47,22 +47,22 @@
   <% end %>
 <% end %>
 <header>
-<h1><%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
+<h1><%= @representative.profession %> <%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
 </header>
 <div class="card text-center center border_orange" id="representative_card">
   <div class="card-header border_orange">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
-        <a class="nav-link" id="tab-1" href="/representatives/<%=@representative.id%>">Overview</a>
+        <%= link_to 'Overview', show_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
-      <li class="nav-item">
+      <li>
         <a class="nav-link active" href="#">Voting Record</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/representatives/<%= @representative.id%>/donations">Campaign Finances</a>
+      <li>
+        <%= link_to 'Campaign Finances', donations_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/representatives/<%= @representative.id%>/contact">Contact</a>
+      <li>
+        <%= link_to 'Contact', contact_representative_path(:id => @representative.id, :index => @index), :remote => true, class: "nav-link"%>
       </li>
     </ul>
   </div>
