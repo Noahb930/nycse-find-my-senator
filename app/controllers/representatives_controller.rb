@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'sendgrid-ruby'
+require 'geokit'
 class RepresentativesController < ApplicationController
   before_action :set_representative, only: [:show, :edit, :update, :destroy]
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
@@ -8,15 +9,44 @@ class RepresentativesController < ApplicationController
   def find
     address=params[:address]
     city=params[:city]
-    zipcode=params[:zipcode]
+    zip=params[:zipcode]
     @reps = []
-    doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zipcode}"))
-    name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
-    if name==""
-      flash[:danger] = "Address is not valid, please try again"
-      redirect_to '/'
+    # doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zip}"))
+    # name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
+    # if name==""
+    #   flash[:danger] = "Address is not valid, please try again"
+    #   redirect_to '/'
+    # end
+    # @reps.push(Representative.where(name: name)[0])
+    district = ""
+    results = Geocoder.search("#{address}, #{city} #{zip}")
+    latlng = results.first.coordinates
+    loc =  Geokit::LatLng.new(latlng[0], latlng[1])
+    file = File.read('admaps.json').downcase
+    maps = JSON.parse(file)
+    output = []
+    maps["ad"].each do |map|
+      district = "District " + map["features"][0]["properties"]["district"].to_s
+      points = []
+      if map["features"][0]["geometry"]["type"] == "polygon"
+        map["features"][0]["geometry"]["coordinates"][0].each do |point|
+          points << Geokit::LatLng.new(point[1], point[0])
+        end
+        polygon = Geokit::Polygon.new(points)
+      else
+        map["features"][0]["geometry"]["coordinates"][0].each do |shape|
+          shape.each do |point|
+            points << Geokit::LatLng.new(point[0], point[1])
+          end
+        end
+        polygon = Geokit::Polygon.new(points)
+      end
+      if polygon.contains? loc
+        rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
+        @reps.push(rep)
+        break
+      end
     end
-    @reps.push(Representative.where(name: name)[0])
     respond_to do |format|
       format.html { render :view}
     end
