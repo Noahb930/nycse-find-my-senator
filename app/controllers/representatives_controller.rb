@@ -11,13 +11,13 @@ class RepresentativesController < ApplicationController
     city=params[:city]
     zip=params[:zipcode]
     @reps = []
-    # doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zip}"))
-    # name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
-    # if name==""
-    #   flash[:danger] = "Address is not valid, please try again"
-    #   redirect_to '/'
-    # end
-    # @reps.push(Representative.where(name: name)[0])
+    doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zip}"))
+    name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
+    if name==""
+      flash[:danger] = "Address is not valid, please try again"
+      redirect_to '/'
+    end
+    @reps.push(Representative.where(name: name)[0])
     district = ""
     results = Geocoder.search("#{address}, #{city} #{zip}")
     latlng = results.first.coordinates
