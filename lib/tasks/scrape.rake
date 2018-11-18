@@ -9,16 +9,15 @@ namespace :scrape do
 
 
   task senators: :environment do
-    @doc = Nokogiri::HTML(open("https://www.nysenate.gov/representatives-committees"))
-    representatives = @doc.css(".c-representative-block")
+    @doc = Nokogiri::HTML(open("https://www.nysenate.gov/senators-committees"))
+    representatives = @doc.css(".c-senator-block")
     representatives.each do |representative|
-      name = representative.css(".nys-representative--name").text
-      url = "https://www.nysenate.gov/representatives/#{first_name}-#{last_name}"
-      email = "#{last_name}@nysenate.gov"
+      name = representative.css(".nys-senator--name").text
       img = representative.css("img").attr('src')
-      party = representative.css(".nys-representative--party").text.strip
-      district = representative.css(".nys-representative--district").text.split(")")[1].strip
-      representative = Representative.new(name: name, url: url, email: email, party: party, district: district, img: img, rating: "?", profession: "NY State Senator")
+      party = representative.css(".nys-senator--party").text.strip
+      district = representative.css(".nys-senator--district").text.split(")")[1].strip
+      representative = Representative.new(name: name, party: party, district: district, img: img, rating: "?", profession: "NY State Senator")
+      puts representative
       representative.save()
     end
   end

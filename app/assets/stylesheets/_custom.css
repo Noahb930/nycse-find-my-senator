@@ -81,6 +81,8 @@ img{
   border-color:#e56f44;
   border-width:2px;
   border-style: solid;
+	width: 320px;
+	height: 320px;
 }
 .nav-tabs .nav-link:hover{
   border-top-color: #e56f44;
