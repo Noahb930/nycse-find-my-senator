@@ -5,10 +5,14 @@ ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
+gem 'watir'
+gem 'selenium-webdriver'
+gem "webdrivers", "~> 3.0"
 gem 'bootstrap','~> 4.0.0.alpha3'
 gem 'nokogiri'
 gem 'jquery-rails'
 gem 'popper_js'
+gem 'geokit'
 gem 'font-awesome-rails'
 gem 'sendgrid-ruby'
 gem 'mechanize'
@@ -26,6 +30,8 @@ gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
+gem 'json'
+gem 'geocoder'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

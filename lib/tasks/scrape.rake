@@ -3,6 +3,11 @@ namespace :scrape do
   require 'open-uri'
   require 'mechanize'
   require 'date'
+  require 'json'
+  require 'geocoder'
+  require 'geokit'
+
+
   task senators: :environment do
     @doc = Nokogiri::HTML(open("https://www.nysenate.gov/representatives-committees"))
     representatives = @doc.css(".c-representative-block")
@@ -29,23 +34,102 @@ namespace :scrape do
       profession = "NY State Assembly Member"
       district = member.css("strong").text.split("--")[1].strip
       email = member.css(".mem-email a").text
-      representative = Representative.new(name: name,url: url, profession: profession, email: email, district: district, img: img)
+      representative = Representative.new(name: name,url: url, profession: profession, email: email, district: district, img: img,rating: "?",party: "?")
       representative.save()
     end
   end
   task test1: :environment do
-    agent = Mechanize.new
+    agent = Mechanize.new { |a|
+  # Flickr refreshes after login
+  a.follow_meta_refresh = true
+}
     page = agent.get('https://assembly.state.ny.us/mem/search/')
     form = page.forms[0]
-    form.field_with(:name => 'gmap_street').value = "125 e 87"
-    form.field_with(:name => 'gmap_city').value = "new york"
-    form.field_with(:name => 'gmap_zip').value = "10128"
-    mem_page = agent.submit(form)
-    pp page
-    puts "\n"
-    pp mem_page
+      form.field_with(:name => 'gmap_street').value = "125 e 87"
+      form.field_with(:name => 'gmap_city').value = "new york"
+      form.field_with(:name => 'gmap_zip').value = "10128"
+    mem_page =form.submit
+
+    # pp page
+    # puts "\n"
+    # pp mem_page
     name = mem_page.css("#mem-name a")
-    pp name.text
+    puts name.text
+  end
+  task test3: :environment do
+    address = "125 e 87"
+    address.gsub!(' ', '%20')
+    browser = Watir::Browser.new :chrome, headless: true
+    puts "http://www.elections.ny.gov/district-map/district-map.html#/?address=#{address}&radius=1"
+    browser.goto("http://www.elections.ny.gov/district-map/district-map.html#/?address=#{address}&radius=1")
+    pp browser.links
+    browser.div(id: "boxesass").wait_until {puts "yctuvib"}
+    # .element(tag_name: 'strong').
+    # browser.css("#boxesass strong").when_present {puts "xtcryvugibhon"}
+
+  end
+  task test4: :environment do
+    browser = Watir::Browser.new :chrome, headless: true
+    browser.goto("https://nyassembly.gov/mem/search/")
+    browser.text_field(:name, "gmap_street").set '125 e 87'
+    browser.text_field(:name, "gmap_city").set 'new york'
+    browser.text_field(:name, "gmap_zip").set '10128'
+    btn = browser.button value: 'Locate'
+    btn.click
+    sleep 5
+    pp browser.div(id: "mem-name").links[0].text
+    end
+  task test2: :environment do
+    agent = Mechanize.new
+    page = agent.get("https://council.nyc.gov/districts/")
+    form = page.forms[0]
+    form.field_with(:id => 'list-search-input').value = "125 e 87"
+    rep_page = form.submit
+    pp rep_page
+    # pp page
+    # puts "\n"
+    # pp mem_page
+  end
+  task test5: :environment do
+    district = ""
+    address = "125 e 87"
+    city = "New York"
+    zip = "10128"
+    results = Geocoder.search("#{address}, #{city} #{zip}")
+    latlng = results.first.coordinates
+    loc =  Geokit::LatLng.new(latlng[0], latlng[1])
+    file = File.read('admaps.json').downcase
+    maps = JSON.parse(file)
+    output = []
+    maps["ad"].each do |map|
+      district = "District " + map["features"][0]["properties"]["district"].to_s
+      points = []
+      if map["features"][0]["geometry"]["type"] == "polygon"
+        map["features"][0]["geometry"]["coordinates"][0].each do |point|
+          points << Geokit::LatLng.new(point[1], point[0])
+        end
+        polygon = Geokit::Polygon.new(points)
+      else
+        map["features"][0]["geometry"]["coordinates"][0].each do |shape|
+          shape.each do |point|
+            points << Geokit::LatLng.new(point[0], point[1])
+          end
+        end
+        polygon = Geokit::Polygon.new(points)
+      end
+      if polygon.contains? loc
+        puts district
+        break
+      end
+      obj = {district: district, polygon: polygon}
+      output.push(obj)
+    end
+    # file = File.open("maps.rb", 'w')
+    # file.write("require 'geokit'\n")
+    # file.write("assembly_map = ")
+    # file.write(output)
+    rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
+    puts rep
   end
   task donations: :environment do
     agent = Mechanize.new
