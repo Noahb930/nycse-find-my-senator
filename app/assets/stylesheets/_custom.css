@@ -92,8 +92,11 @@ img{
 .nav-tabs .nav-link{
   border-width:2px;
   margin-left: -2px;
-  margin-bottom: -1px;
+  margin-bottom: -2px;
+	height: 50px;
+	  margin-top:3px;
   border-bottom-style:none;
+	overflow:hidden;
 }
 .nav-tabs .nav-link.active,{
   border-top-color: #e56f44;
@@ -101,8 +104,7 @@ img{
   border-bottom-color: #fff;
   border-left-color: #e56f44;
   border-width:2px;
-  margin-top:3px;
-  border-bottom-style:solid
+	border-bottom-style:solid;
 }
 #tab-1{
   margin-left: 0px

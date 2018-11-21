@@ -11,20 +11,36 @@ class RepresentativesController < ApplicationController
     city=params[:city]
     zip=params[:zipcode]
     @reps = []
-    doc = Nokogiri::HTML(open("https://www.nysenate.gov/find-my-senator?search=true&addr1=#{address}&city=#{city}&zip5=#{zip}"))
-    name = doc.css(".c-find-my-senator--district-info .c-find-my-senator--senator-link").text.squish
-    if name==""
-      flash[:danger] = "Address is not valid, please try again"
-      redirect_to '/'
-    end
-    @reps.push(Representative.where(name: name)[0])
     district = ""
     results = Geocoder.search("#{address}, #{city} #{zip}")
     latlng = results.first.coordinates
     loc =  Geokit::LatLng.new(latlng[0], latlng[1])
+    file = File.read('senate_maps.json').downcase
+    maps = JSON.parse(file)
+    maps["features"].each do |map|
+      district = "District " + map["properties"]["district"].to_s
+      points = []
+      if map["geometry"]["type"] == "polygon"
+        map["geometry"]["coordinates"][0].each do |point|
+          points << Geokit::LatLng.new(point[1], point[0])
+        end
+        polygon = Geokit::Polygon.new(points)
+      else
+        map["geometry"]["coordinates"][0].each do |shape|
+          shape.each do |point|
+            points << Geokit::LatLng.new(point[0], point[1])
+          end
+        end
+        polygon = Geokit::Polygon.new(points)
+      end
+      if polygon.contains? loc
+        rep = Representative.where(profession:"NY State Senator").where(district: district).first
+        @reps.push(rep)
+        break
+      end
+    end
     file = File.read('admaps.json').downcase
     maps = JSON.parse(file)
-    output = []
     maps["ad"].each do |map|
       district = "District " + map["features"][0]["properties"]["district"].to_s
       points = []
@@ -50,6 +66,10 @@ class RepresentativesController < ApplicationController
     respond_to do |format|
       format.html { render :view}
     end
+  end
+  def admin_state_assembly_index
+  end
+  def admin_senate_index
   end
   def show
     @representative = Representative.find(params[:id])
