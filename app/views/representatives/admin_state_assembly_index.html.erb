@@ -12,7 +12,7 @@
           <p> <%= representative.party %> - <%= representative.district %> </p>
           <div class ="white-text">
            <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
-           <%= link_to "Edit", representative , class: "btn btn-secondary btn-block" %>
+           <%= link_to "Edit", edit_representative_path(representative) , class: "btn btn-secondary btn-block" %>
            <%= link_to 'Destroy', representative, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-block btn-danger" %>
 
                     </div>

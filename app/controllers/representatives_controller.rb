@@ -3,7 +3,7 @@ require 'open-uri'
 require 'sendgrid-ruby'
 require 'geokit'
 class RepresentativesController < ApplicationController
-  before_action :set_representative, only: [:show, :edit, :update, :destroy]
+      before_action :set_representative, only: [:show, :edit, :update, :destroy]
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
   before_action :authenticate, except: [:index, :show, :find, :votes, :donations, :contact]
   def find
@@ -137,9 +137,7 @@ class RepresentativesController < ApplicationController
     @representative = Representative.new
   end
 
-  # GET /representatives/1/edit
-  def edit
-  end
+
 
   def admin_votes
     @representative = Representative.find(params[:id])
@@ -178,7 +176,9 @@ class RepresentativesController < ApplicationController
       end
     end
   end
-
+  def edit
+    @representative = Representative.find(params[:id])
+  end
   # DELETE /representatives/1
   # DELETE /representatives/1.json
   def destroy
