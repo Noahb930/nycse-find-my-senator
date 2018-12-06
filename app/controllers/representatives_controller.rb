@@ -11,11 +11,37 @@ class RepresentativesController < ApplicationController
     city=params[:city]
     zip=params[:zipcode]
     @reps = []
+    Representative.where(profession:"Member of The US House of Representatives").where(district: district).each do |rep|
+      
     district = ""
     results = Geocoder.search("#{address}, #{city} #{zip}")
     latlng = results.first.coordinates
     loc =  Geokit::LatLng.new(latlng[0], latlng[1])
-    file = File.read('senate_maps.json').downcase
+    file = File.read("house_map.json").downcase
+    maps = JSON.parse(file)
+    maps["features"].each do |map|
+      district = "District " + map["properties"]["district"].to_s
+      points = []
+      if map["geometry"]["type"] == "polygon"
+        map["geometry"]["coordinates"][0].each do |point|
+          points << Geokit::LatLng.new(point[1], point[0])
+        end
+        polygon = Geokit::Polygon.new(points)
+      else
+        map["geometry"]["coordinates"][0].each do |shape|
+          shape.each do |point|
+            points << Geokit::LatLng.new(point[0], point[1])
+          end
+        end
+        polygon = Geokit::Polygon.new(points)
+      end
+      if polygon.contains? loc
+        rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
+        @reps.push(rep)
+        break
+      end
+    end
+    file = File.read('state_senate_map.json').downcase
     maps = JSON.parse(file)
     maps["features"].each do |map|
       district = "District " + map["properties"]["district"].to_s
@@ -39,18 +65,18 @@ class RepresentativesController < ApplicationController
         break
       end
     end
-    file = File.read('admaps.json').downcase
+    file = File.read('assembly_map.json').downcase
     maps = JSON.parse(file)
-    maps["ad"].each do |map|
-      district = "District " + map["features"][0]["properties"]["district"].to_s
+    maps["features"].each do |map|
+      district = "District " + map["properties"]["district"].to_s.sub!(/^[0]+/,'')
       points = []
-      if map["features"][0]["geometry"]["type"] == "polygon"
-        map["features"][0]["geometry"]["coordinates"][0].each do |point|
+      if map["geometry"]["type"] == "polygon"
+        map["geometry"]["coordinates"][0].each do |point|
           points << Geokit::LatLng.new(point[1], point[0])
         end
         polygon = Geokit::Polygon.new(points)
       else
-        map["features"][0]["geometry"]["coordinates"][0].each do |shape|
+        map["geometry"]["coordinates"][0].each do |shape|
           shape.each do |point|
             points << Geokit::LatLng.new(point[0], point[1])
           end

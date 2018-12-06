@@ -198,66 +198,68 @@ namespace :scrape do
     end
   end
   task votes: :environment do
-
-    @doc = Nokogiri::HTML(open(""))
-    bill_id = bill.id
-    passed_senate = @doc.css(".nys-bill-status li")[4].attr('class') == "passed"
-    puts @doc.css(".passed")[1].attr('class')
-    in_commitee = @doc.css(".passed")[1].attr('class') == "passed"
-    puts "sponsor:"
-    sponsor_name = @doc.css(".c-sponsor a").text
-    sponsor = Representative.where(name: sponsor).take
-    puts sponsor
-    puts "\ncosponsor:"
-    cosponsor_name = @doc.css(".initial_co-sponsors a").text
-    cosponsor = Representative.where(name: sponsor).take
-    puts cosponsor
-    if passed_senate
-      puts "\npassed senate"
-      puts "\naye votes:"
-      aye_votes = @doc.css(".c-bill--vote_1 .c-votes--items")[0].css("a")
-      aye_votes.each do |vote|
-        name = vote.text
-        representative = Representative.where("name ~* ?", name).first
-        unless representative.nil?
-          puts representative.name
-        end
+    bill_number = "A08976"
+    term = "2017"
+    doc = Nokogiri::HTML(open("https://nyassembly.gov/leg/?default_fld=&leg_video=&bn=#{bill_number}&term=#{term}&Summary=Y&Floor%26nbspVotes=Y"))
+    rows = doc.css("table")[0].css("tr")
+    sponsor = rows[4].css("td")[1].text
+    cosponsors = rows[6].css("td")[1].text.split(",").collect{|x| x.strip || x }
+    rows = doc.css("table")[1].css("tr")
+    aye = []
+    nay = []
+    er = []
+    rows.each do |row|
+      if row.css("td")[1].text == "Y"
+        aye.push(row.css("td")[0].text)
+      elsif row.css("td")[1].text == "NO"
+        nay.push(row.css("td")[0].text)
+      elsif row.css("td")[1].text == "ER"
+        er.push(row.css("td")[0].text)
       end
-      puts "\nnay votes:"
-      nay_votes = @doc.css(".c-bill--vote_1 .c-votes--items")[1].css("a")
-      nay_votes.each do |vote|
-        name = vote.text
-        representative = Representative.where("name ~* ?", name).first
-        unless representative.nil?
-          puts representative.name
-        end
+      if row.css("td")[3].text == "Y"
+        aye.push(row.css("td")[2].text)
+      elsif row.css("td")[3].text == "NO"
+        nay.push(row.css("td")[2].text)
+      elsif row.css("td")[3].text == "ER"
+        er.push(row.css("td")[2].text)
       end
-    elsif in_commitee
-      puts "\nin commitee"
-      puts "\naye votes:"
-      aye_votes = @doc.css(".c-bill--vote_2 .c-votes--items")[0].css("a")
-      aye_votes.each do |vote|
-        name = vote.text
-        representative = Representative.where("name ~* ?", name).first
-        unless representative.nil?
-          puts representative.name
-        end
+      if row.css("td")[5].text == "Y"
+        aye.push(row.css("td")[4].text)
+      elsif row.css("td")[5].text == "NO"
+        nay.push(row.css("td")[4].text)
+      elsif row.css("td")[5].text == "ER"
+        er.push(row.css("td")[4].text)
       end
-      puts "\nnay votes:"
-      nay_votes = @doc.css(".c-bill--vote_2 .c-votes--items")[1].css("a")
-      nay_votes.each do |vote|
-        name = vote.text
-        representative = Representative.where("name ~* ?", name).first
-        unless representative.nil?
-          puts representative.name
-        end
+      if row.css("td")[7].text == "Y"
+        aye.push(row.css("td")[6].text)
+      elsif row.css("td")[7].text == "NO"
+        nay.push(row.css("td")[6].text)
+      elsif row.css("td")[7].text == "ER"
+        er.push(row.css("td")[6].text)
+      end
+      if row.css("td")[9].text == "Y"
+        aye.push(row.css("td")[8].text)
+      elsif row.css("td")[9].text == "NO"
+        nay.push(row.css("td")[8].text)
+      elsif row.css("td")[9].text == "ER"
+        er.push(row.css("td")[8].text)
+      end
+      if row.css("td")[11].text == "Y"
+        aye.push(row.css("td")[10].text)
+      elsif row.css("td")[11].text == "NO"
+        nay.push(row.css("td")[10].text)
+      elsif row.css("td")[11].text == "ER"
+        er.push(row.css("td")[10].text)
       end
     end
-    puts "\nunknown votes:"
-    Representative.all.each do |representative|
-        unless vote.bill_id == bill_id
-          puts representative.name
-        end
+    aye  = aye - (aye & cosponsors)
+    er = er - (er & cosponsors)
+    puts aye.length
+    puts nay.length
+    puts er.length
+    puts cosponsors.length
+    aye.each do |rep|
+      Representative.where("name like ?", "%#{rep.strip}%")
     end
   end
 end
