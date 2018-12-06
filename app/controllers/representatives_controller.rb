@@ -11,8 +11,10 @@ class RepresentativesController < ApplicationController
     city=params[:city]
     zip=params[:zipcode]
     @reps = []
-    Representative.where(profession:"Member of The US House of Representatives").where(district: district).each do |rep|
-      
+    Representative.where(profession:"US Senator").each do |rep|
+      @reps.push(rep)
+    end
+
     district = ""
     results = Geocoder.search("#{address}, #{city} #{zip}")
     latlng = results.first.coordinates
