@@ -97,6 +97,8 @@ class RepresentativesController < ApplicationController
   end
   def admin_state_assembly_index
   end
+  def admin_house_index
+  end
   def admin_senate_index
   end
   def show
