@@ -235,7 +235,6 @@ button,
 
   /* Grid */
 
-  /* Basic */
 
   @-ms-viewport {
   	width: device-width;
@@ -852,4 +851,21 @@ button,
   }
 #footer > p{
       color: #bfbfbf;
+}
+/* Basic */
+#rep-nav{
+font-size: 14px;
+width: 250px;
+float:left;
+text-align: center;
+display: inline-block;
+position: fixed;
+margin-top: 100px;
+}
+.rep-header{
+	width: 800px;
+	text-align: center;
+}
+.rep-section{
+	padding-top: 15px;
 }

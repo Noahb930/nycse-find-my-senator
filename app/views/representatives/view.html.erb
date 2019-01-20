@@ -1,5 +1,17 @@
-<% @reps.each_with_index do |representative, index| %>
-  <div id = "representative_container_<%= index %>">
-    <%= render :partial => 'show', :locals => {:@representative => representative, :@index => index} %>
+<div data-turbolinks="false">
+  <div id="rep-nav" class="list-group border_orange">
+    <% @reps.each_with_index do |representative, index| %>
+      <a href="/#rep-<%=index%>"  class="list-group-item list-group-item-action border_orange">
+        <%= representative["profession"]  %>
+      </a>
+    <% end %>
   </div>
-<% end %>
+
+  <% @reps.each_with_index do |representative, index| %>
+    <section class="rep-section" id = "rep-<%=index%>">
+      <div class="representative_container" id = "representative_container_<%= index %>">
+        <%= render :partial => 'show', :locals => {:@representative => representative, :@index => index} %>
+      </div>
+    </section>
+  <% end %>
+</div>
