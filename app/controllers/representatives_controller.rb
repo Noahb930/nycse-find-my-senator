@@ -39,7 +39,9 @@ class RepresentativesController < ApplicationController
       end
       if polygon.contains? loc
         rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
-        @reps.push(rep)
+        unless rep.nil?
+          @reps.push(rep)
+        end
         break
       end
     end
@@ -63,14 +65,16 @@ class RepresentativesController < ApplicationController
       end
       if polygon.contains? loc
         rep = Representative.where(profession:"NY State Senator").where(district: district).first
-        @reps.push(rep)
+        unless rep.nil?
+          @reps.push(rep)
+        end
         break
       end
     end
     file = File.read('assembly_map.json').downcase
     maps = JSON.parse(file)
     maps["features"].each do |map|
-      district = "District " + map["properties"]["district"].to_s.sub!(/^[0]+/,'')
+      district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
       points = []
       if map["geometry"]["type"] == "polygon"
         map["geometry"]["coordinates"][0].each do |point|
@@ -87,7 +91,9 @@ class RepresentativesController < ApplicationController
       end
       if polygon.contains? loc
         rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
-        @reps.push(rep)
+        unless rep.nil?
+          @reps.push(rep)
+        end
         break
       end
     end
