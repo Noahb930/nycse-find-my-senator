@@ -38,6 +38,7 @@ class RepresentativesController < ApplicationController
         polygon = Geokit::Polygon.new(points)
       end
       if polygon.contains? loc
+        puts district
         rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
         unless rep.nil?
           @reps.push(rep)
