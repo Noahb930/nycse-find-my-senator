@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get '/statesenate', to: 'representatives#admin_state_senate_index'
     get '/assembly', to: 'representatives#admin_state_assembly_index'
     get '/house', to: 'representatives#admin_house_index'
+    get '/council', to: 'representatives#admin_council_index'
   end
   root 'static_pages#home'
   get '/show/:addr/:city/:zip', to: "static_pages#show"

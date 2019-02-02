@@ -22,7 +22,7 @@ class RepresentativesController < ApplicationController
     file = File.read("house_map.json").downcase
     maps = JSON.parse(file)
     maps["features"].each do |map|
-      district = "District " + map["properties"]["district"].to_s
+      district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
       points = []
       if map["geometry"]["type"] == "polygon"
         map["geometry"]["coordinates"][0].each do |point|
@@ -38,7 +38,6 @@ class RepresentativesController < ApplicationController
         polygon = Geokit::Polygon.new(points)
       end
       if polygon.contains? loc
-        puts district
         rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
         unless rep.nil?
           @reps.push(rep)
@@ -49,7 +48,7 @@ class RepresentativesController < ApplicationController
     file = File.read('state_senate_map.json').downcase
     maps = JSON.parse(file)
     maps["features"].each do |map|
-      district = "District " + map["properties"]["district"].to_s
+      district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
       points = []
       if map["geometry"]["type"] == "polygon"
         map["geometry"]["coordinates"][0].each do |point|
@@ -98,6 +97,32 @@ class RepresentativesController < ApplicationController
         break
       end
     end
+    file = File.read('city_council_map.json').downcase
+    maps = JSON.parse(file)
+    maps["features"].each do |map|
+      district = "District " + map["properties"]["coun_dist"].to_s.sub(/^[0]+/,'')
+      points = []
+      if map["geometry"]["type"] == "polygon"
+        map["geometry"]["coordinates"][0].each do |point|
+          points << Geokit::LatLng.new(point[1], point[0])
+        end
+        polygon = Geokit::Polygon.new(points)
+      else
+        map["geometry"]["coordinates"][0].each do |shape|
+          shape.each do |point|
+            points << Geokit::LatLng.new(point[0], point[1])
+          end
+        end
+        polygon = Geokit::Polygon.new(points)
+      end
+      if polygon.contains? loc
+        rep = Representative.where(profession:"NYC City Council Member").where(district: district).first
+        unless rep.nil?
+          @reps.push(rep)
+        end
+        break
+      end
+    end
     respond_to do |format|
       format.html { render :view}
     end
@@ -107,6 +132,8 @@ class RepresentativesController < ApplicationController
   def admin_house_index
   end
   def admin_senate_index
+  end
+  def admin_council_index
   end
   def show
     @representative = Representative.find(params[:id])
