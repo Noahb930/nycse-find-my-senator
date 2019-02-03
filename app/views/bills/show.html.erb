@@ -2,7 +2,7 @@
 
 <div class="card text-center bill">
   <div class="card-header ">
-    <h2 class = "card-title">NY State Senate Bill <%= @bill.number %></h3>
+    <h2 class = "card-title"><%= @bill.location %> Bill <%= @bill.number %></h3>
   </div>
   <div class="card-body">
     <p class="card-text"><strong>Summary:</strong> <%= @bill.summary %></p>

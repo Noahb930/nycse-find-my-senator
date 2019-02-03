@@ -33,9 +33,13 @@
       <%= form.label(:session, "Session:") %></th>
       <%= form.select :session, sessions, {}, { :class => 'form-control' }%>
     </div>
-    <div class = "form-group col-sm-3">
-      <%= form.label(:session, "Status:") %></th>
-      <%= form.select :status, ["Select Status","Stricken","Introduced","In Committee","On Floor Calendar","Passed Senate","Passed Assembly","Passed Senate and Assembly","Delivered To Governor","Signed By Governor","Vetoed By Governor"], {}, { :class => 'form-control' }%>
+    <div class = "form-group col-sm-4">
+      <%= form.label(:status, "Status:") %>
+      <%= form.text_field(:status, class: "form-control") %>
+    </div>
+    <div class = "form-group col-sm-4">
+      <%= form.label(:location, "Location:") %>
+      <%= form.select :location, ["Select Location","NY State Senate","NY State Assembly","US Senate","US House","NYC City Council"], {}, { :class => 'form-control' }%>
     </div>
   </div>
   <div class = "form-row">

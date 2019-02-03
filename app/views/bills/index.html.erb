@@ -1,6 +1,6 @@
 <% Bill.all.each do |bill| %>
 <div class = "card bill">
-  <div class="card-header">NY State Senate Bill <%= bill.number %></div>
+  <div class="card-header"><%= @bill.location %> Bill <%= bill.number %></div>
   <div class="card-body">
     <p><strong>Status: </strong><%= bill.status %></p>
     <p><strong>Summary: </strong> <%= bill.summary %> </p>
