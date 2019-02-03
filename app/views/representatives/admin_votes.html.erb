@@ -88,12 +88,12 @@
 
 
       <% if vote.stance =="unknown" %>
-        <% header = "Unknown Stance on Senate Bill " %>
+        <% header = "Unknown Stance on #{bill.location} Bill " %>
         <% icon="exclamation-triangle" %>
       <% end %>
 
       <% if vote.stance == "for" %>
-        <% header = "Voted for Senate Bill " %>
+        <% header = "Voted for #{bill.location} Bill " %>
         <% if bill.supports_gun_control == "yes" %>
           <% icon="thumbs-up" %>
         <% end %>
@@ -103,7 +103,7 @@
       <% end %>
 
       <% if vote.stance == "sponsor" %>
-        <% header = "Sponsored Senate Bill " %>
+        <% header = "Sponsored #{bill.location} Bill " %>
         <% if bill.supports_gun_control == "yes" %>
           <% icon="thumbs-up" %>
         <% end %>
@@ -113,7 +113,7 @@
       <% end %>
 
       <% if vote.stance == "cosponsor" %>
-        <% header = "Cosponsored Senate Bill " %>
+        <% header = "Cosponsored #{bill.location} Bill " %>
         <% if bill.supports_gun_control == "yes" %>
           <% icon="thumbs-up" %>
         <% end %>
@@ -123,7 +123,7 @@
       <% end %>
 
       <% if vote.stance == "against" %>
-        <% header = "Voted against Senate Bill " %>
+        <% header = "Voted against #{bill.location} Bill " %>
         <% if bill.supports_gun_control == "no" %>
           <% icon="thumbs-up" %>
         <% end %>

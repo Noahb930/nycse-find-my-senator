@@ -27,10 +27,10 @@
   	    <% total = 0 %>
   	    <% donations.each do |donation| %>
   	      <% value = donation.value %>
-  	      <% total  = total + donation.value.map {|x| x[/\d+/]}.to_i %>
+  	      <% total  = total + donation.value.gsub(/\W+/, '').to_i %>
   	    <% end %>
   	    <% if total > 0 %>
-  	    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "Money Recieved From Gun Lobbyists: $#{total}"%></h4>
+  	    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "Money Recieved From Gun Lobbyists: $#{number_with_delimiter(total)}"%></h4>
   	    <% else %>
   	    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "No Money Recieved From Gun Lobbyists!!!"%></h4>
   	    <%end%>
