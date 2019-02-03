@@ -6,10 +6,10 @@ Rails.application.routes.draw do
 
   scope '/admin' do
     resources :votes, except: [:index, :edit, :show]
-    resources :bills
+    resources :bills, only: [:create, :destroy, :new, :edit]
     resources :donations, only: [:create, :destroy]
     resources :lobbyists
-    get '/bills/', to: 'bills#admin_index'
+    get '/bills', to: 'bills#admin_index'
     get '/bills/:id', to: 'bills#admin_show'
     resources :representatives, except: [:index, :show, :find, :destroy, :new, :create, :destroy_all, :contact]
     get '/representatives/', to: 'representatives#admin_index'

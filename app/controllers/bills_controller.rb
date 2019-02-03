@@ -33,7 +33,20 @@ class BillsController < ApplicationController
 
     respond_to do |format|
       if @bill.save
-        Representative.all.each do |representative|
+        profession = ""
+        if @bill.location == "NY State Senate"
+          profession = "NY State Senator"
+        elsif @bill.location == "NY State Assembly"
+          profession = "NY State Assembly Member"
+        elsif @bill.location == "US Senate"
+          profession = "US Senator"
+        elsif @bill.location == "US House"
+          profession = "Member of The US House of Representatives "
+        elsif @bill.location == "NYC City Council"
+          profession = "NYC City Council Member"
+        end
+
+        Representative.where(profession:profession).each do |representative|
           puts "representative"
             vote = Vote.new(bill_id:@bill.id, representative_id:representative.id, stance:"unknown")
             vote.save();
@@ -86,7 +99,7 @@ class BillsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_params
-      params.require(:bill).permit(:number, :status, :session, :summary, :shorthand, :supports_gun_control , :url)
+      params.require(:bill).permit(:number,:location, :status, :session, :summary, :shorthand, :supports_gun_control , :url)
     end
 
     def authenticate

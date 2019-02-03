@@ -19,6 +19,45 @@
     <div class = "row card-deck" >
       <% sponsors.each do |sponsor| %>
         <% representative = Representative.find(sponsor.representative_id) %>
+        <div class="modal fade" id="stanceModal-<%= representative.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Edit Stance of <%= representative.name %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                <%= form_for sponsor do |form| %>
+                <div class = "form-group">
+                  <label for="stance-sponsor" class="inline">Sponsor:</label>
+                  <input type="radio" id="stance-sponsor" class="inline" name="vote[stance]" checked="checked" value = "sponsor">
+                  <label for="stance-cosponsor" class="inline">Cosponsor:</label>
+                  <input type="radio" id="stance-cosponsor" class="inline" name="vote[stance]" value = "cosponsor">
+                  <label for="stance-for-voter" class="inline">For:</label>
+                  <input type="radio" id="stance-for-voter" class="inline" name="vote[stance]" value = "for">
+                  <label for="stance-unknown-voter" class="inline">Unknown:</label>
+                  <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]" value = "unknown">
+                  <label for="stance-against-voter" class="inline">Against:</label>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">              </div>
+                <div class = "form-group">
+                  <label for="official_statement">Official Statement:</label>
+                  <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <% end %>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <div class="card col-md-2 border-primary text-primary" >
           <img class="card-img-top" src="<%= representative.img %>" alt="Card image cap">
           <h4 class="card-title"><%= representative.name %></h4>
@@ -27,7 +66,8 @@
           <p><strong>Official Statement:</strong> <%= sponsor.position %> </p>
           <div class ="white-text">
           <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
-                  </div>
+          <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= representative.id %>">Edit Stance</button>
+        </div>
         </div>
       <% end %>
     </div>
@@ -40,7 +80,45 @@
     <div class = "row card-deck" >
       <% cosponsors.each do |cosponsor| %>
         <% representative = Representative.find(cosponsor.representative_id) %>
+        <div class="modal fade" id="stanceModal-<%= representative.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Edit Stance of <%= representative.name %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                <%= form_for cosponsor do |form| %>
+                <div class = "form-group">
+                  <label for="stance-sponsor" class="inline">Sponsor:</label>
+                  <input type="radio" id="stance-sponsor" class="inline" name="vote[stance]" value = "sponsor">
+                  <label for="stance-cosponsor" class="inline">Cosponsor:</label>
+                  <input type="radio" id="stance-cosponsor" class="inline" name="vote[stance]" value = "cosponsor" checked="checked">
+                  <label for="stance-for-voter" class="inline">For:</label>
+                  <input type="radio" id="stance-for-voter" class="inline" name="vote[stance]" value = "for">
+                  <label for="stance-unknown-voter" class="inline">Unknown:</label>
+                  <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]"  value = "unknown">
+                  <label for="stance-against-voter" class="inline">Against:</label>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">              </div>
+                <div class = "form-group">
+                  <label for="official_statement">Official Statement:</label>
+                  <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <% end %>
 
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <div class="card col-md-2 border-secondary text-secondary" >
           <img class="card-img-top" src="<%= representative.img %>" alt="Card image cap">
           <h4 class="card-title"><%= representative.name %></h4>
@@ -49,7 +127,8 @@
           <p><strong>Official Statement:</strong> <%= cosponsor.position %> </p>
           <div class ="white-text">
            <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
-                    </div>
+           <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= representative.id %>">Edit Stance</button>
+         </div>
         </div>
       <% end %>
     </div>
@@ -62,7 +141,45 @@
     <div class = "row card-deck" >
       <% for_voters.each do |for_voter| %>
         <% representative = Representative.find(for_voter.representative_id) %>
+        <div class="modal fade" id="stanceModal-<%= representative.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Edit Stance of <%= representative.name %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                <%= form_for for_voter do |form| %>
+                <div class = "form-group">
+                  <label for="stance-sponsor" class="inline">Sponsor:</label>
+                  <input type="radio" id="stance-sponsor" class="inline" name="vote[stance]" value = "sponsor">
+                  <label for="stance-cosponsor" class="inline">Cosponsor:</label>
+                  <input type="radio" id="stance-cosponsor" class="inline" name="vote[stance]" value = "cosponsor">
+                  <label for="stance-for-voter" class="inline">For:</label>
+                  <input type="radio" id="stance-for-voter" class="inline" name="vote[stance]" checked="checked" value = "for">
+                  <label for="stance-unknown-voter" class="inline">Unknown:</label>
+                  <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]"  value = "unknown">
+                  <label for="stance-against-voter" class="inline">Against:</label>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">              </div>
+                <div class = "form-group">
+                  <label for="official_statement">Official Statement:</label>
+                  <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <% end %>
 
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <div class="card col-md-2 border-success text-success" >
           <img class="card-img-top" src="<%= representative.img %>" alt="Card image cap">
           <h4 class="card-title"><%= representative.name %></h4>
@@ -71,7 +188,8 @@
           <p><strong>Official Statement:</strong> <%= for_voter.position %> </p>
           <div class ="white-text">
            <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
-                    </div>
+           <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= representative.id %>">Edit Stance</button>
+         </div>
         </div>
       <% end %>
     </div>
@@ -84,7 +202,41 @@
     <div class = "row card-deck" >
       <% unknown_voters.each do |unknown_voter| %>
         <% representative = Representative.find(unknown_voter.representative_id) %>
+        <div class="modal fade" id="stanceModal-<%= representative.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Edit Stance of <%= representative.name %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                <%= form_for unknown_voter do |form| %>
+                <div class = "form-group">
+                  <label for="stance-sponsor" class="inline">Sponsor:</label>
+                  <input type="radio" id="stance-sponsor" class="inline" name="vote[stance]" value = "sponsor">
+                  <label for="stance-cosponsor" class="inline">Cosponsor:</label>
+                  <input type="radio" id="stance-cosponsor" class="inline" name="vote[stance]" value = "cosponsor">
+                  <label for="stance-for-voter" class="inline">For:</label>
+                  <input type="radio" id="stance-for-voter" class="inline" name="vote[stance]" value = "for">
+                  <label for="stance-unknown-voter" class="inline">Unknown:</label>
+                  <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]" checked="checked" value = "unknown">
+                  <label for="stance-against-voter" class="inline">Against:</label>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <% end %>
 
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="card col-md-2 border-warning text-warning" >
           <img class="card-img-top" src="<%= representative.img %>" alt="Card image cap">
           <h4 class="card-title"><%= representative.name %></h4>
@@ -92,7 +244,8 @@
           <p><strong>Official Statement:</strong> <%= unknown_voter.position %> </p>
           <div class ="white-text">
            <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
-                    </div>
+           <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= representative.id %>">Edit Stance</button>
+         </div>
         </div>
       <% end %>
     </div>
@@ -105,6 +258,45 @@
     <div class = "row card-deck" >
       <% against_voters.each do |against_voter| %>
         <% representative = Representative.find(against_voter.representative_id) %>
+        <div class="modal fade" id="stanceModal-<%= representative.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Edit Stance of <%= representative.name %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                <%= form_for against_voter do |form| %>
+                <div class = "form-group">
+                  <label for="stance-sponsor" class="inline">Sponsor:</label>
+                  <input type="radio" id="stance-sponsor" class="inline" name="vote[stance]" value = "sponsor">
+                  <label for="stance-cosponsor" class="inline">Cosponsor:</label>
+                  <input type="radio" id="stance-cosponsor" class="inline" name="vote[stance]" value = "cosponsor">
+                  <label for="stance-for-voter" class="inline">For:</label>
+                  <input type="radio" id="stance-for-voter" class="inline" name="vote[stance]" value = "for">
+                  <label for="stance-unknown-voter" class="inline">Unknown:</label>
+                  <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]"  value = "unknown">
+                  <label for="stance-against-voter" class="inline">Against:</label>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against" checked="checked">
+                </div>
+                <div class = "form-group">
+                  <label for="official_statement">Official Statement:</label>
+                  <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <% end %>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="card col-md-2 border-danger text-danger" >
           <img class="card-img-top" src="<%= representative.img %>" alt="Card image cap">
           <h4 class="card-title"><%= representative.name %></h4>
@@ -113,7 +305,8 @@
           <p><strong>Official Statement:</strong> <%= against_voter.position %> </p>
           <div class ="white-text">
            <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
-                    </div>
+           <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= representative.id %>">Edit Stance</button>
+         </div>
         </div>
       <% end %>
     </div>
