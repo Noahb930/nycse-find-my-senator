@@ -48,13 +48,14 @@
                 <button type="submit" class="btn btn-primary">Save changes</button>
                 <% end %>
 
+                <br><br><br><br><td><%= link_to 'DELETE VOTE: WAS NOT IN OFFICE DURRING VOTE CANNOT UNDO', sponsor, method: :delete, data: { confirm: "Are you sure that you want to delete the Vote of #{representative.name}" }, class: "button button-danger" %></td>
+
 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
-              </form>
             </div>
           </div>
         </div>
@@ -109,13 +110,13 @@
                 <button type="submit" class="btn btn-primary">Save changes</button>
                 <% end %>
 
+                <br><br><td><%= link_to 'DELETE VOTE: WAS NOT IN OFFICE DURRING VOTE CANNOT UNDO', cosponsor, method: :delete, data: { confirm: "Are you sure that you want to delete the Vote of #{representative.name}" }, class: "button button-danger" %></td>
 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
-              </form>
             </div>
           </div>
         </div>
@@ -169,6 +170,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Save changes</button>
                 <% end %>
+                <br><br><td><%= link_to 'DELETE VOTE: WAS NOT IN OFFICE DURRING VOTE CANNOT UNDO', for_voter, method: :delete, data: { confirm: "Are you sure that you want to delete the Vote of #{representative.name}" }, class: "button button-danger" %></td>
 
 
               </div>
@@ -176,7 +178,6 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
-              </form>
             </div>
           </div>
         </div>
@@ -227,6 +228,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Save changes</button>
                 <% end %>
+                <br><br><td><%= link_to 'DELETE VOTE: WAS NOT IN OFFICE DURRING VOTE CANNOT UNDO', unknown_voter, method: :delete, data: { confirm: "Are you sure that you want to delete the Vote of #{representative.name}" }, class: "button button-danger"%></td>
 
 
               </div>
@@ -287,6 +289,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Save changes</button>
                 <% end %>
+                <br><br><td><%= link_to 'DELETE VOTE: WAS NOT IN OFFICE DURRING VOTE CANNOT UNDO', against_voter, method: :delete, data: { confirm: "Are you sure that you want to delete the Vote of #{representative.name}" }, class: "button button-danger" %></td>
 
 
               </div>

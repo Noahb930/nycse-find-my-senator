@@ -18,7 +18,7 @@
       <%= form.text_field(:number, class: "form-control") %>
     </div>
     <div class = "form-group col-sm-3">
-      <%= form.label(:shorthand, "Shorthand Name:") %></th>
+      <%= form.label(:shorthand, "Shorthand Name:") %>
       <%= form.text_field(:shorthand, class: "form-control") %>
     </div>
     <div class = "form-group col-sm-3">
@@ -30,7 +30,7 @@
         sessions.push(session)
       end
       %>
-      <%= form.label(:session, "Session:") %></th>
+      <%= form.label(:session, "Session:") %>
       <%= form.select :session, sessions, {}, { :class => 'form-control' }%>
     </div>
     <div class = "form-group col-sm-4">
@@ -44,6 +44,8 @@
   </div>
   <div class = "form-row">
     <div class="form-check form-check-inline">
+      <p> select if the bill suppourts gun control <p>
+      <p> dont select if the bill is against gun control </p>
       <%= form.check_box :supports_gun_control, {class: "form-check-input"}, "yes", "no" %>
       <%= form.label :supports_gun_control, "Supports Gun Control:",{class: "form-check-label"} %>
     </div>

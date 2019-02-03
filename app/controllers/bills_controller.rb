@@ -7,14 +7,9 @@ class BillsController < ApplicationController
   def index
     @bills = Bill.all
   end
-  def admin_index
-    @bills = Bill.all
-  end
   # GET /bills/1
   # GET /bills/1.json
-  def admin_show
-    @bill = Bill.find(params[:id])
-  end
+
 
   # GET /bills/new
   def new
@@ -41,7 +36,7 @@ class BillsController < ApplicationController
         elsif @bill.location == "US Senate"
           profession = "US Senator"
         elsif @bill.location == "US House"
-          profession = "Member of The US House of Representatives "
+          profession = "Member of The US House of Representatives"
         elsif @bill.location == "NYC City Council"
           profession = "NYC City Council Member"
         end
