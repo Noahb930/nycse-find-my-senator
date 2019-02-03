@@ -27,7 +27,7 @@
   	    <% total = 0 %>
   	    <% donations.each do |donation| %>
   	      <% value = donation.value %>
-  	      <% total  = total + donation.value[1..-1].to_i %>
+  	      <% total  = total + donation.value.map {|x| x[/\d+/]}.to_i %>
   	    <% end %>
   	    <% if total > 0 %>
   	    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "Money Recieved From Gun Lobbyists: $#{total}"%></h4>
