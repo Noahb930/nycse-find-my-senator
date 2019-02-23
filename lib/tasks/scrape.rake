@@ -127,8 +127,41 @@ namespace :scrape do
     # file.write("require 'geokit'\n")
     # file.write("assembly_map = ")
     # file.write(output)
+
     rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
     puts rep
+  end
+  task :house_finances,  [:id,:name, :start_year, :end_year] => [:environment] do |t, args|
+    agent = Mechanize.new
+    lobbyist = Lobbyist.where(name: args[:name]).first
+    if lobbyist.nil?
+      lobbyist = Lobbyist.new(name: args[:name])
+      lobbyist.save()
+    end
+    (args[:start_year]..args[:end_year]).step(2) do |cycle|
+      page = agent.get("https://www.opensecrets.org/orgs/recips.php?id=#{args[:id]}&type=P&cycle=#{cycle.to_s}&sort=A&state=NY")
+      rows = page.css('#recips tbody tr')
+      rows.each do |row|
+        cells = row.css("td")
+        value = cells[2].text
+        name = cells[0].text.split(" ")
+        first = name[1]
+        last = name[0].chop()
+        puts "#{first} #{last}"
+        rep = Representative.where("name like ?", "%#{first}%").where("name like ?", "%#{last}%").first
+        puts cells[2].text
+        unless rep.nil?
+        start_cycle = cycle.to_i - 1
+        year = start_cycle.to_s + " - " + cycle.to_s
+        donation = Donation.new(representative_id: rep.id, lobbyist_id: lobbyist.id, value: value, year: year)
+        donation.save()
+        rep.donations.push(donation)
+        rep.save
+        lobbyist.donations.push(donation)
+        lobbyist.save()
+      end
+      end
+    end
   end
   task donations: :environment do
     agent = Mechanize.new

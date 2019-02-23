@@ -100,27 +100,30 @@ class RepresentativesController < ApplicationController
     file = File.read('city_council_map.json').downcase
     maps = JSON.parse(file)
     maps["features"].each do |map|
-      district = "District " + map["properties"]["coun_dist"].to_s.sub(/^[0]+/,'')
+      district = "District " + map["properties"]["coun_dist"].to_s
+      puts district
       points = []
       if map["geometry"]["type"] == "polygon"
         map["geometry"]["coordinates"][0].each do |point|
           points << Geokit::LatLng.new(point[1], point[0])
         end
-        polygon = Geokit::Polygon.new(points)
       else
-        map["geometry"]["coordinates"][0].each do |shape|
-          shape.each do |point|
+        puts "a"
+        map["geometry"]["coordinates"].each do |shape|
+          shape[0].each do |point|
+            puts point
             points << Geokit::LatLng.new(point[0], point[1])
           end
         end
         polygon = Geokit::Polygon.new(points)
-      end
-      if polygon.contains? loc
-        rep = Representative.where(profession:"NYC City Council Member").where(district: district).first
-        unless rep.nil?
-          @reps.push(rep)
+        if polygon.contains? loc
+          puts district
+          rep = Representative.where(profession:"NYC City Council Member").where(district: district).first
+          unless rep.nil?
+            @reps.push(rep)
+          end
+          break
         end
-        break
       end
     end
     respond_to do |format|
