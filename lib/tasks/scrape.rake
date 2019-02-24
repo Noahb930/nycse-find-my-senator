@@ -131,7 +131,7 @@ namespace :scrape do
     rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
     puts rep
   end
-  task :house_finances,  [:id,:name, :start_year, :end_year] => [:environment] do |t, args|
+  task :congress_finances,  [:id,:name, :start_year, :end_year] => [:environment] do |t, args|
     agent = Mechanize.new
     lobbyist = Lobbyist.where(name: args[:name]).first
     if lobbyist.nil?
@@ -163,6 +163,41 @@ namespace :scrape do
       end
     end
   end
+  task :lobbyists,  [:keywords] => [:environment] do |t, args|
+    agent = Mechanize.new
+    args[:keywords].split(" ").each do |keyword|
+      ["11","12"].each do |office|
+        puts "#########################################################"
+        puts "#########################################################"
+        puts "please wait: searching for lobbyists with the keyword #{keyword}"
+        form_page = agent.get('https://www.elections.ny.gov/ContributionSearchB_State_Office.html')
+        form = form_page.forms[1]
+        form.field_with(:name => 'NAME_IN').value = keyword
+        form.field_with(:name => 'position_IN').value = "ANYWHERE"
+        form.field_with(:name => 'date_from').value = "01/01/1990"
+        form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
+        form.field_with(:name => 'AMOUNT_from').value = 0
+        form.field_with(:name => 'AMOUNT_to').value = 100000
+        form.field_with(:name => 'OFFICE_IN').value = office
+        donations_page = agent.submit(form)
+        rows = donations_page.search("tr")
+        rows[2..rows.length - 3].each do |row|
+          name = row.css("td:first-child font").inner_html.split("<br>")[0].to_s.strip.gsub('amp;', '')
+          if Lobbyist.where(name: name).empty?
+            STDOUT.puts "Add lobbyist #{name}? (y/n)"
+            input = STDIN.gets.strip
+            if input == 'y'
+              lobbyist = Lobbyist.new(name: name)
+              lobbyist.save()
+              puts "addded"
+            else
+              STDOUT.puts "canceled"
+            end
+          end
+        end
+      end
+    end
+  end
   task donations: :environment do
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
@@ -182,11 +217,11 @@ namespace :scrape do
         last_name = representative.name.split(" ").last
       end
       form.field_with(:name => 'NAME_IN').value = last_name
-      form.field_with(:name => 'date_from').value = "1/1/1950"
+      form.field_with(:name => 'date_from').value = "01/01/1990"
       form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
       form.field_with(:name => 'AMOUNT_from').value = 0
       form.field_with(:name => 'CATEGORY_IN').value = "OTHER"
-      form.field_with(:name => 'AMOUNT_to').value = 10000
+      form.field_with(:name => 'AMOUNT_to').value = 100000
       funds_page = agent.submit(form)
       links = funds_page.links[3..funds_page.links.length-2]
       links.each do |link|
