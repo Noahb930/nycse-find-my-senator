@@ -217,28 +217,40 @@ namespace :scrape do
       form.field_with(:name => 'date_from').value = "01/01/1990"
       form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
       form.field_with(:name => 'AMOUNT_from').value = 0
-      form.field_with(:name => 'CATEGORY_IN').value = "OTHER"
-      form.field_with(:name => 'AMOUNT_to').value = 100000
+      form.field_with(:name => 'CATEGORY_IN').value = "ALL"
+      form.field_with(:name => 'AMOUNT_to').value = 1000000
       funds_page = agent.submit(form)
       links = funds_page.links[3..funds_page.links.length-2]
-      links.each do |link|
-        donations_page = link.click
-        rows = donations_page.search("tr")
-        rows[1..rows.length - 2].each do |row|
-          year = row.search("td").children.text.scan(/(?:19|20)\d{2}\b/)
-          name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
-          value = "$" + row.search("td").children.text.scan(/(\d)+(\,\d\d\d)/).join
-          Lobbyist.all.each do |lobbyist|
-            if name.include? lobbyist.name
-              puts lobbyist.name
-              donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
-              donation.save()
-              representative.donations.push(donation)
-              representative.save
-              lobbyist.donations.push(donation)
-              lobbyist.save()
+      links.each_with_index do |link, i|
+        STDOUT.puts "Check link #{funds_page.css("tr")[i+1].css("td")[0].text}? (y/n)"
+        input = STDIN.gets.strip
+        if input == 'y'
+          puts "checking"
+          donations_page = link.click
+          rows = donations_page.search("tr")
+          rows[2..-2].each do |row|
+            year = row.css("td")[2].text.split("-")[2].to_i
+            if year > 20
+              year = "19"+year.to_s
+            else
+              year = "20"+year.to_s
+            end
+            name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
+            value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(row.css("td")[1].text).to_s
+            Lobbyist.all.each do |lobbyist|
+              if name.include? lobbyist.name
+                puts lobbyist.name
+                donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
+                donation.save()
+                representative.donations.push(donation)
+                representative.save
+                lobbyist.donations.push(donation)
+                lobbyist.save()
+              end
             end
           end
+        else
+          STDOUT.puts "canceled"
         end
       end
     end
