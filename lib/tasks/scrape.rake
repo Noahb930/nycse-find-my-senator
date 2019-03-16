@@ -131,7 +131,7 @@ namespace :scrape do
     rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
     puts rep
   end
-  task :congress_finances,  [:id,:name, :start_year, :end_year] => [:environment] do |t, args|
+  task :congress_orgs,  [:id,:name, :start_year, :end_year] => [:environment] do |t, args|
     agent = Mechanize.new
     lobbyist = Lobbyist.where(name: args[:name]).first
     if lobbyist.nil?
@@ -198,23 +198,20 @@ namespace :scrape do
       end
     end
   end
-  task donations: :environment do
+  task state_legislature_contributions: :environment do
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
     form = form_page.forms[1]
-    Representative.all.each do |representative|
+    Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).each do |representative|
       puts "################################################"
       puts "################################################"
       puts representative.name
+      names = representative.name.split(" ")
       last_name = ""
-      if representative.name.split(" ").last[-1] == "."
-        names = representative.name.split(" ")
-        last_name = names[names.length-2]
-      elsif representative.name.split(" ").length == 4
-        names = representative.name.split(" ")
-        last_name = names[names.length-2]
+      if names[-1][-1] == "."
+        last_name = names[-2]
       else
-        last_name = representative.name.split(" ").last
+        last_name = names[-1]
       end
       form.field_with(:name => 'NAME_IN').value = last_name
       form.field_with(:name => 'date_from').value = "01/01/1990"
@@ -230,35 +227,16 @@ namespace :scrape do
         rows[1..rows.length - 2].each do |row|
           year = row.search("td").children.text.scan(/(?:19|20)\d{2}\b/)
           name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
-          value = "$" + row.search("td").children.text.scan(/(\d+\,)?(\d+\.\d\d)/).join
-          # Lobbyist.all.each do |lobbyist|
-          #   if name.include? lobbyist.name
-          #     puts lobbyist.name
-          #     donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
-          #     donation.save()
-          #     representative.donations.push(donation)
-          #     representative.save
-          #     lobbyist.donations.push(donation)
-          #     lobbyist.save()
-          #   end
-          # end
-          year.each do |y|
-            unless y.to_i>2018
-              if ((name.include? "GUN " )|| (name.include? "RIFLE ") || (name.include? "NRA "))&&(name.exclude? "CONTROL")&&(name.exclude? "VIOLENCE")&&(name.exclude? "SAFETY")&&(name.exclude? "GUN HILL")
-                puts name
-                lobbyist = Lobbyist.new(name: name)
-                unless Lobbyist.where(name: name).length >0
-                  lobbyist.save()
-                else
-                  lobbyist = Lobbyist.where(name: name)[0]
-                end
-                donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: y)
-                donation.save()
-                representative.donations.push(donation)
-                representative.save
-                lobbyist.donations.push(donation)
-                lobbyist.save()
-              end
+          value = "$" + row.search("td").children.text.scan(/(\d)+(\,\d\d\d)/).join
+          Lobbyist.all.each do |lobbyist|
+            if name.include? lobbyist.name
+              puts lobbyist.name
+              donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
+              donation.save()
+              representative.donations.push(donation)
+              representative.save
+              lobbyist.donations.push(donation)
+              lobbyist.save()
             end
           end
         end
