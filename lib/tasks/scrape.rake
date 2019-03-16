@@ -222,6 +222,7 @@ namespace :scrape do
       funds_page = agent.submit(form)
       links = funds_page.links[3..funds_page.links.length-2]
       links.each_with_index do |link, i|
+        puts "Current Representative: " + representative.name
         STDOUT.puts "Check link #{funds_page.css("tr")[i+1].css("td")[0].text}? (y/n)"
         input = STDIN.gets.strip
         if input == 'y'
