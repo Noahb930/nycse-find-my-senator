@@ -237,7 +237,8 @@ namespace :scrape do
               year = "20"+year.to_s
             end
             name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
-            value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(row.css("td")[1].text).to_s
+            puts name
+            value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
             Lobbyist.all.each do |lobbyist|
               if name.include? lobbyist.name
                 puts lobbyist.name
