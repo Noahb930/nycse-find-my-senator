@@ -202,7 +202,7 @@ namespace :scrape do
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
     form = form_page.forms[1]
-    Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).each do |representative|
+    Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).where.not("rating like ?", "%A%").each do |representative|
       puts "################################################"
       puts "################################################"
       puts representative.name
