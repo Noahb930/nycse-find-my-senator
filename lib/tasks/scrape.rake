@@ -239,96 +239,94 @@ namespace :scrape do
       end
     end
   end
-  # task state_legislature_contributions: :environment do
-  #   agent = Mechanize.new
-  #   form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
-  #   form = form_page.forms[1]
-  #   Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).where.not("rating like ?", "%A%").each do |representative|
-  #     puts "################################################"
-  #     puts "################################################"
-  #     puts representative.name
-  #     names = representative.name.split(" ")
-  #     last_name = ""
-  #     if names[-1][-1] == "."
-  #       last_name = names[-2]
-  #     else
-  #       last_name = names[-1]
-  #     end
-  #     form.field_with(:name => 'NAME_IN').value = last_name
-  #     form.field_with(:name => 'date_from').value = "01/01/1990"
-  #     form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
-  #     form.field_with(:name => 'AMOUNT_from').value = 0
-  #     form.field_with(:name => 'CATEGORY_IN').value = "OTHER"
-  #     form.field_with(:name => 'AMOUNT_to').value = 1000000
-  #     funds_page = agent.submit(form)
-  #     links = funds_page.links[3..funds_page.links.length-2]
-  #     links.each_with_index do |link, i|
-  #       puts "Current Representative: " + representative.name
-  #       STDOUT.puts "Check link #{funds_page.css("tr")[i+1].css("td")[0].text}? (y/n)"
-  #       input = STDIN.gets.strip
-  #       if input == 'y'
-  #         puts "checking"
-  #         donations_page = link.click
-  #         rows = donations_page.search("tr")
-  #         rows[2..-2].each do |row|
-  #           year = row.css("td")[2].text.split("-")[2].to_i
-  #           if year > 20
-  #             year = "19"+year.to_s
-  #           else
-  #             year = "20"+year.to_s
-  #           end
-  #           name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
-  #           puts name
-  #           value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
-  #           Lobbyist.all.each do |lobbyist|
-  #             if name == lobbyist.name
-  #               puts lobbyist.name
-  #               donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
-  #               donation.save()
-  #               representative.donations.push(donation)
-  #               representative.save
-  #               lobbyist.donations.push(donation)
-  #               lobbyist.save()
-  #             end
-  #           end
-  #         end
-  #       else
-  #         STDOUT.puts "canceled"
-  #       end
-  #     end
-  #   end
-  # end
   task state_legislature_contributions: :environment do
     links_array = Representative.where(name: "links array")[0].beliefs.split(" ")
-    links_array.each do |link|
-      agent = Mechanize.new
-      url = "http://www.elections.ny.gov:8080"+link
-      donations_page = agent.get(url)
-      rows = donations_page.search("tr")
-      rows[2..-2].each do |row|
-        year = row.css("td")[2].text.split("-")[2].to_i
-        if year > 20
-          year = "19"+year.to_s
-        else
-          year = "20"+year.to_s
-        end
-        name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
-        puts name
-        value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
-        Lobbyist.all.each do |lobbyist|
-          if name == lobbyist.name
-            puts lobbyist.name
-            donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
-            donation.save()
-            representative.donations.push(donation)
-            representative.save
-            lobbyist.donations.push(donation)
-            lobbyist.save()
+    agent = Mechanize.new
+    form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
+    form = form_page.forms[1]
+    Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).where.not("rating like ?", "%A%").each do |representative|
+      puts "################################################"
+      puts "################################################"
+      puts representative.name
+      names = representative.name.split(" ")
+      last_name = ""
+      if names[-1][-1] == "."
+        last_name = names[-2]
+      else
+        last_name = names[-1]
+      end
+      form.field_with(:name => 'NAME_IN').value = last_name
+      form.field_with(:name => 'date_from').value = "01/01/1990"
+      form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
+      form.field_with(:name => 'AMOUNT_from').value = 0
+      form.field_with(:name => 'CATEGORY_IN').value = "OTHER"
+      form.field_with(:name => 'AMOUNT_to').value = 1000000
+      funds_page = agent.submit(form)
+      links = funds_page.links[3..funds_page.links.length-2]
+      links.each_with_index do |link, i|
+        links_array.each do |confirmed|
+          if link.href == confirmed
+            donations_page = link.click
+            rows = donations_page.search("tr")
+            rows[2..-2].each do |row|
+              year = row.css("td")[2].text.split("-")[2].to_i
+              if year > 20
+                year = "19"+year.to_s
+              else
+                year = "20"+year.to_s
+              end
+              name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
+              puts name
+              value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
+              Lobbyist.all.each do |lobbyist|
+                if name == lobbyist.name
+                  puts lobbyist.name
+                  donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
+                  donation.save()
+                  representative.donations.push(donation)
+                  representative.save
+                  lobbyist.donations.push(donation)
+                  lobbyist.save()
+                end
+              end
+            end
+          else
           end
         end
       end
     end
   end
+  # task state_legislature_contributions: :environment do
+  #   links_array = Representative.where(name: "links array")[0].beliefs.split(" ")
+  #   links_array.each do |link|
+  #     agent = Mechanize.new
+  #     url = "http://www.elections.ny.gov:8080"+link
+  #     donations_page = agent.get(url)
+  #     rows = donations_page.search("tr")
+  #     rows[2..-2].each do |row|
+  #       year = row.css("td")[2].text.split("-")[2].to_i
+  #       if year > 20
+  #         year = "19"+year.to_s
+  #       else
+  #         year = "20"+year.to_s
+  #       end
+  #       name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
+  #       puts name
+  #       value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
+  #       Lobbyist.all.each do |lobbyist|
+  #         if name == lobbyist.name
+  #           puts lobbyist.name
+  #           donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
+  #           donation.save()
+  #           representative.donations.push(donation)
+  #           representative.save
+  #           lobbyist.donations.push(donation)
+  #           lobbyist.save()
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
   task votes: :environment do
     bill_number = "A08976"
     term = "2017"
