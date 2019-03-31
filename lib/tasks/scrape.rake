@@ -164,7 +164,8 @@ namespace :scrape do
     end
   end
   task links: :environment do
-    links_array = []
+    links_obj = Representative.where(name: "links array")
+    links_array = links_obj.split(" ")
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
     form = form_page.forms[1]
@@ -194,6 +195,8 @@ namespace :scrape do
         if input == 'y'
           puts "checking"
           links_array.push(link.href)
+          links_obj.beliefs = links_array.join(" ")
+          links_obj.save()
         else
           STDOUT.puts "canceled"
         end
