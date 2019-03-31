@@ -303,32 +303,27 @@ namespace :scrape do
     links_array.each do |link|
       agent = Mechanize.new
       url = "http://www.elections.ny.gov:8080"+link
-            donations_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
-            rows = donations_page.search("tr")
-            rows[2..-2].each do |row|
-              year = row.css("td")[2].text.split("-")[2].to_i
-              if year > 20
-                year = "19"+year.to_s
-              else
-                year = "20"+year.to_s
-              end
-              name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
-              puts name
-              value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
-              Lobbyist.all.each do |lobbyist|
-                if name == lobbyist.name
-                  puts lobbyist.name
-                  donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
-                  donation.save()
-                  representative.donations.push(donation)
-                  representative.save
-                  lobbyist.donations.push(donation)
-                  lobbyist.save()
-                end
-              end
-            end
-          else
-            STDOUT.puts "canceled"
+      donations_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
+      rows = donations_page.search("tr")
+      rows[2..-2].each do |row|
+        year = row.css("td")[2].text.split("-")[2].to_i
+        if year > 20
+          year = "19"+year.to_s
+        else
+          year = "20"+year.to_s
+        end
+        name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
+        puts name
+        value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
+        Lobbyist.all.each do |lobbyist|
+          if name == lobbyist.name
+            puts lobbyist.name
+            donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
+            donation.save()
+            representative.donations.push(donation)
+            representative.save
+            lobbyist.donations.push(donation)
+            lobbyist.save()
           end
         end
       end
