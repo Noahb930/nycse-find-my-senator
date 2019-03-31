@@ -164,7 +164,7 @@ namespace :scrape do
     end
   end
   task links: :environment do
-    links_obj = Representative.where(name: "links array")
+    links_obj = Representative.where(name: "links array")[0]
     links_array = links_obj.split(" ")
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
