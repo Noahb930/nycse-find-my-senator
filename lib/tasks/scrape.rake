@@ -303,7 +303,7 @@ namespace :scrape do
     links_array.each do |link|
       agent = Mechanize.new
       url = "http://www.elections.ny.gov:8080"+link
-      donations_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
+      donations_page = agent.get(url)
       rows = donations_page.search("tr")
       rows[2..-2].each do |row|
         year = row.css("td")[2].text.split("-")[2].to_i
