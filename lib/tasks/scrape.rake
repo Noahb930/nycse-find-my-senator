@@ -263,6 +263,7 @@ namespace :scrape do
       form.field_with(:name => 'AMOUNT_to').value = 1000000
       funds_page = agent.submit(form)
       links = funds_page.links[3..funds_page.links.length-2]
+      puts links
       links.each_with_index do |link, i|
         links_array.each do |confirmed|
           if link.href == confirmed
