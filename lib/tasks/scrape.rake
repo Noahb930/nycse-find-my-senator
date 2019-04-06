@@ -284,13 +284,12 @@ namespace :scrape do
                   donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
                   donation.save()
                   representative.donations.push(donation)
-                  representative.save
+                  representative.save()
                   lobbyist.donations.push(donation)
                   lobbyist.save()
                 end
               end
             end
-          else
           end
         end
       end
