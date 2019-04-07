@@ -264,9 +264,9 @@ namespace :scrape do
       funds_page = agent.submit(form)
       links = funds_page.links[3..funds_page.links.length-2]
       links.each_with_index do |link, i|
-              puts link.href
         links_array.each do |confirmed|
           if link.href == confirmed
+            puts "vyubibu vbijnco9 w8"
             donations_page = link.click
             rows = donations_page.search("tr")
             rows[2..-2].each do |row|
