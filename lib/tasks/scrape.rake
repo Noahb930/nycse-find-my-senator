@@ -265,9 +265,7 @@ namespace :scrape do
       links = funds_page.links[3..funds_page.links.length-2]
       links.each_with_index do |link, i|
         links_array.each do |confirmed|
-          puts link.href
-          puts confirmed
-          if link.href == confirmed
+          if link.href.split("&date_From")[0] == confirmed.split("&date_From")[0]
             puts "vyubibu vbijnco9 w8"
             donations_page = link.click
             rows = donations_page.search("tr")
