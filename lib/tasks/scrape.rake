@@ -280,7 +280,7 @@ namespace :scrape do
               puts name
               value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
               Lobbyist.all.each do |lobbyist|
-                if name == lobbyist.name
+                if name.include(lobbyist.name)
                   puts lobbyist.name
                   donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
                   donation.save()
