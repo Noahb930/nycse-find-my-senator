@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :bills
     resources :donations, only: [:create, :destroy]
     resources :lobbyists
+    resources :donations
     resources :representatives, except: [:index, :show, :find, :destroy, :new, :create, :destroy_all, :contact]
     get '/representatives/', to: 'representatives#admin_index'
     get '/representatives/:id', to: 'representatives#admin_show'

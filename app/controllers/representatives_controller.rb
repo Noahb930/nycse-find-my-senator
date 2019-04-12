@@ -17,117 +17,154 @@ class RepresentativesController < ApplicationController
 
     district = ""
     results = Geocoder.search("#{address}, #{city} #{zip}")
-    latlng = results.first.coordinates
-    loc =  Geokit::LatLng.new(latlng[0], latlng[1])
-    file = File.read("house_map.json").downcase
-    maps = JSON.parse(file)
-    maps["features"].each do |map|
-      district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
-      points = []
-      if map["geometry"]["type"] == "polygon"
-        map["geometry"]["coordinates"][0].each do |point|
-          points << Geokit::LatLng.new(point[1], point[0])
-        end
-        polygon = Geokit::Polygon.new(points)
-      else
-        map["geometry"]["coordinates"][0].each do |shape|
-          shape.each do |point|
-            points << Geokit::LatLng.new(point[0], point[1])
+    if results.empty?
+      flash[:error] = "Not a Valid Address"
+      redirect_to root_path
+    elsif results.first.data["address"]["adminDistrict"] != "NY"
+      flash[:error] = "Not a Valid Address in New York"
+      redirect_to root_path
+    else
+      latlng = results.first.coordinates
+      loc =  Geokit::LatLng.new(latlng[0], latlng[1])
+      file = File.read("house_map.json").downcase
+      maps = JSON.parse(file)
+      maps["features"].each do |map|
+        district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
+        if map["geometry"]["type"] == "polygon"
+          points = []
+          map["geometry"]["coordinates"][0].each do |point|
+            points << Geokit::LatLng.new(point[1], point[0])
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
+          end
+        else
+          map["geometry"]["coordinates"][0].each do |shape|
+            points = []
+            shape.each do |point|
+              points << Geokit::LatLng.new(point[1], point[0])
+            end
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
           end
         end
-        polygon = Geokit::Polygon.new(points)
       end
-      if polygon.contains? loc
-        rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
-        unless rep.nil?
-          @reps.push(rep)
-        end
-        break
-      end
-    end
-    file = File.read('state_senate_map.json').downcase
-    maps = JSON.parse(file)
-    maps["features"].each do |map|
-      district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
-      points = []
-      if map["geometry"]["type"] == "polygon"
-        map["geometry"]["coordinates"][0].each do |point|
-          points << Geokit::LatLng.new(point[1], point[0])
-        end
-        polygon = Geokit::Polygon.new(points)
-      else
-        map["geometry"]["coordinates"][0].each do |shape|
-          shape.each do |point|
-            points << Geokit::LatLng.new(point[0], point[1])
+      file = File.read('state_senate_map.json').downcase
+      maps = JSON.parse(file)
+      maps["features"].each do |map|
+        district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
+        if map["geometry"]["type"] == "polygon"
+          points = []
+          map["geometry"]["coordinates"][0].each do |point|
+            points << Geokit::LatLng.new(point[1], point[0])
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"NY State Senator").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
+          end
+        else
+          map["geometry"]["coordinates"][0].each do |shape|
+            points = []
+            shape.each do |point|
+              points << Geokit::LatLng.new(point[1], point[0])
+            end
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"NY State Senator").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
           end
         end
-        polygon = Geokit::Polygon.new(points)
       end
-      if polygon.contains? loc
-        rep = Representative.where(profession:"NY State Senator").where(district: district).first
-        unless rep.nil?
-          @reps.push(rep)
-        end
-        break
-      end
-    end
-    file = File.read('assembly_map.json').downcase
-    maps = JSON.parse(file)
-    maps["features"].each do |map|
-      district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
-      points = []
-      if map["geometry"]["type"] == "polygon"
-        map["geometry"]["coordinates"][0].each do |point|
-          points << Geokit::LatLng.new(point[1], point[0])
-        end
-        polygon = Geokit::Polygon.new(points)
-      else
-        map["geometry"]["coordinates"][0].each do |shape|
-          shape.each do |point|
-            points << Geokit::LatLng.new(point[0], point[1])
+      file = File.read('assembly_map.json').downcase
+      maps = JSON.parse(file)
+      maps["features"].each do |map|
+        district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
+        if map["geometry"]["type"] == "polygon"
+          points = []
+          map["geometry"]["coordinates"][0].each do |point|
+            points << Geokit::LatLng.new(point[1], point[0])
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
+          end
+        else
+          map["geometry"]["coordinates"][0].each do |shape|
+            points = []
+            shape.each do |point|
+              points << Geokit::LatLng.new(point[1], point[0])
+            end
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
           end
         end
-        polygon = Geokit::Polygon.new(points)
       end
-      if polygon.contains? loc
-        rep = Representative.where(profession:"NY State Assembly Member").where(district: district).first
-        unless rep.nil?
-          @reps.push(rep)
-        end
-        break
-      end
-    end
-    file = File.read('city_council_map.json').downcase
-    maps = JSON.parse(file)
-    maps["features"].each do |map|
-      district = "District " + map["properties"]["coun_dist"].to_s
-      puts district
-      points = []
-      if map["geometry"]["type"] == "polygon"
-        map["geometry"]["coordinates"][0].each do |point|
-          points << Geokit::LatLng.new(point[1], point[0])
-        end
-      else
-        puts "a"
-        map["geometry"]["coordinates"].each do |shape|
-          shape[0].each do |point|
-            puts point
-            points << Geokit::LatLng.new(point[0], point[1])
+      file = File.read('city_council_map.json').downcase
+      maps = JSON.parse(file)
+      maps["features"].each do |map|
+        district = "District " + map["properties"]["coun_dist"].to_s
+        if map["geometry"]["type"] == "polygon"
+          points = []
+          map["geometry"]["coordinates"][0].each do |point|
+            points << Geokit::LatLng.new(point[1], point[0])
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"NYC City Council Member").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
+          end
+        else
+          map["geometry"]["coordinates"].each do |shape|
+            points = []
+            shape[0].each do |point|
+              points << Geokit::LatLng.new(point[1], point[0])
+            end
+            polygon = Geokit::Polygon.new(points)
+            if polygon.contains? loc
+              rep = Representative.where(profession:"NYC City Council Member").where(district: district).first
+              unless rep.nil?
+                @reps.push(rep)
+              end
+              break
+            end
           end
         end
-        polygon = Geokit::Polygon.new(points)
-        if polygon.contains? loc
-          puts district
-          rep = Representative.where(profession:"NYC City Council Member").where(district: district).first
-          unless rep.nil?
-            @reps.push(rep)
-          end
-          break
-        end
       end
-    end
-    respond_to do |format|
-      format.html { render :view}
+      respond_to do |format|
+        format.html { render :view}
+      end
     end
   end
   def admin_state_assembly_index

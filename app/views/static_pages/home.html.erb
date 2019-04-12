@@ -1,7 +1,13 @@
 
   					<section class="main alt special" id="contact">
   						<header>
+
 						<h2>Find My Representative</h2>
+            <% flash.each do |key, value| %>
+              <div class="alert alert-danger">
+                <%= value %>
+              </div>
+            <% end %>
 						</header>
 						<div class="inner narrow">
   							<form action="/" method="post">
