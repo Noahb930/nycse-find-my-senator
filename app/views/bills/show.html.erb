@@ -15,7 +15,7 @@
 <div class="container-fluid votes-container">
   <h2 class="text-primary">Sponsor(s)</h2>
   <% sponsors = @bill.votes.where(:stance => "sponsor") %>
-  <% sponsors.reverse.each_slice(6) do |sponsors| %>
+  <% sponsors.each_slice(6) do |sponsors| %>
     <div class = "row card-deck" >
       <% sponsors.each do |sponsor| %>
         <% representative = Representative.find(sponsor.representative_id) %>
@@ -77,7 +77,7 @@
 <div class="container-fluid votes-container">
   <h2 class="text-secondary">Cosponsors</h2>
   <% cosponsors = @bill.votes.where(:stance => "cosponsor") %>
-  <% cosponsors.reverse.each_slice(6) do |cosponsors| %>
+  <% cosponsors.each_slice(6) do |cosponsors| %>
     <div class = "row card-deck" >
       <% cosponsors.each do |cosponsor| %>
         <% representative = Representative.find(cosponsor.representative_id) %>
@@ -138,7 +138,7 @@
 <div class="container-fluid votes-container">
   <h2 class="text-success">Representatives in Favor of the Bill</h2>
   <% for_voters = @bill.votes.where(:stance => "for") %>
-  <% for_voters.reverse.each_slice(6) do |for_voters| %>
+  <% for_voters.each_slice(6) do |for_voters| %>
     <div class = "row card-deck" >
       <% for_voters.each do |for_voter| %>
         <% representative = Representative.find(for_voter.representative_id) %>
@@ -199,7 +199,7 @@
 <div class="container-fluid votes-container">
   <h2 class="text-warning">Representatives with Unknown Stances</h2>
   <% unknown_voters = @bill.votes.where(:stance => "unknown") %>
-  <% unknown_voters.reverse.each_slice(6) do |unknown_voters| %>
+  <% unknown_voters.each_slice(6) do |unknown_voters| %>
     <div class = "row card-deck" >
       <% unknown_voters.each do |unknown_voter| %>
         <% representative = Representative.find(unknown_voter.representative_id) %>
@@ -256,7 +256,7 @@
 <div class="container-fluid votes-container">
 <h2 class="text-danger">Representatives Against the Bill</h2>
   <% against_voters = @bill.votes.where(:stance => "against") %>
-  <% against_voters.reverse.each_slice(6) do |against_voters| %>
+  <% against_voters.each_slice(6) do |against_voters| %>
     <div class = "row card-deck" >
       <% against_voters.each do |against_voter| %>
         <% representative = Representative.find(against_voter.representative_id) %>

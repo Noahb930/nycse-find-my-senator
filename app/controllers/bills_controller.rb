@@ -41,7 +41,7 @@ class BillsController < ApplicationController
           profession = "NYC City Council Member"
         end
 
-        Representative.where(profession:profession).each do |representative|
+        Representative.where(profession:profession).sort_by { |s| s.district.scan(/\d+/).first.to_i }.each do |representative|
           puts "representative"
             vote = Vote.new(bill_id:@bill.id, representative_id:representative.id, stance:"unknown")
             vote.save();

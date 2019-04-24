@@ -40,7 +40,10 @@
                   <label for="stance-unknown-voter" class="inline">Unknown:</label>
                   <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]" value = "unknown">
                   <label for="stance-against-voter" class="inline">Against:</label>
-                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">              </div>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">
+                  <label for="stance-na" class="inline">Not In Office:</label>
+                  <input type="radio" id="stance-na" class="inline" name="vote[stance]" value = "na">
+                </div>
                 <div class = "form-group">
                   <label for="official_statement">Official Statement:</label>
                   <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
@@ -100,7 +103,10 @@
                   <label for="stance-unknown-voter" class="inline">Unknown:</label>
                   <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]"  value = "unknown">
                   <label for="stance-against-voter" class="inline">Against:</label>
-                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">              </div>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">
+                  <label for="stance-na" class="inline">Not In Office:</label>
+                  <input type="radio" id="stance-na" class="inline" name="vote[stance]" value = "na">
+                              </div>
                 <div class = "form-group">
                   <label for="official_statement">Official Statement:</label>
                   <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
@@ -114,7 +120,6 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
-              </form>
             </div>
           </div>
         </div>
@@ -161,7 +166,9 @@
                   <label for="stance-unknown-voter" class="inline">Unknown:</label>
                   <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]"  value = "unknown">
                   <label for="stance-against-voter" class="inline">Against:</label>
-                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">              </div>
+                  <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">
+                  <label for="stance-na" class="inline">Not In Office:</label>
+                  <input type="radio" id="stance-na" class="inline" name="vote[stance]" value = "na">                      </div>
                 <div class = "form-group">
                   <label for="official_statement">Official Statement:</label>
                   <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
@@ -175,7 +182,6 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
-              </form>
             </div>
           </div>
         </div>
@@ -223,6 +229,8 @@
                   <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]" checked="checked" value = "unknown">
                   <label for="stance-against-voter" class="inline">Against:</label>
                   <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against">
+                  <label for="stance-na" class="inline">Not In Office:</label>
+                  <input type="radio" id="stance-na" class="inline" name="vote[stance]" value = "na">
                 </div>
                 <button type="submit" class="btn btn-primary">Save changes</button>
                 <% end %>
@@ -279,6 +287,8 @@
                   <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]"  value = "unknown">
                   <label for="stance-against-voter" class="inline">Against:</label>
                   <input type="radio" id="stance-against-voter" class="inline" name="vote[stance]" value = "against" checked="checked">
+                  <label for="stance-na" class="inline">Not In Office:</label>
+                  <input type="radio" id="stance-na" class="inline" name="vote[stance]" value = "na">
                 </div>
                 <div class = "form-group">
                   <label for="official_statement">Official Statement:</label>
@@ -293,7 +303,6 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
-              </form>
             </div>
           </div>
         </div>
@@ -303,6 +312,69 @@
 
           <p> <%= representative.party %> - <%= representative.district %> </p>
           <p><strong>Official Statement:</strong> <%= against_voter.position %> </p>
+          <div class ="white-text">
+           <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
+           <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= representative.id %>">Edit Stance</button>
+         </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="container-fluid votes-container">
+<h2 class="text-warning">Representatives Not in Office to Vote for Bill</h2>
+  <% na_voters = @bill.votes.where(:stance => "na") %>
+  <% na_voters.reverse.each_slice(6) do |nat_voters| %>
+    <div class = "row card-deck" >
+      <% na_voters.each do |na_voter| %>
+        <% representative = Representative.find(na_voter.representative_id) %>
+        <div class="modal fade" id="stanceModal-<%= representative.id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Edit Stance of <%= representative.name %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+                <%= form_for na_voter do |form| %>
+                <div class = "form-group">
+                  <label for="stance-sponsor" class="inline">Sponsor:</label>
+                  <input type="radio" id="stance-sponsor" class="inline" name="vote[stance]" value = "sponsor">
+                  <label for="stance-cosponsor" class="inline">Cosponsor:</label>
+                  <input type="radio" id="stance-cosponsor" class="inline" name="vote[stance]" value = "cosponsor">
+                  <label for="stance-for-voter" class="inline">For:</label>
+                  <input type="radio" id="stance-for-voter" class="inline" name="vote[stance]" value = "for">
+                  <label for="stance-unknown-voter" class="inline">Unknown:</label>
+                  <input type="radio" id="stance-unknown-voter" class="inline" name="vote[stance]"  value = "unknown">
+                  <label for="stance-na-voter" class="inline">Not in Office:</label>
+                  <input type="radio" id="stance-na-voter" class="inline" name="vote[stance]" value = "na" >
+                  <label for="stance-na" class="inline">Not In Office:</label>
+                  <input type="radio" id="stance-na" class="inline" name="vote[stance]" value = "na" checked="checked">
+                </div>
+                <div class = "form-group">
+                  <label for="official_statement">Official Statement:</label>
+                  <textarea type="radio" id="official_statement" name="vote[official_statement]"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <% end %>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card col-md-2 border-danger text-danger" >
+          <img class="card-img-top" src="<%= representative.img %>" alt="Card image cap">
+          <h4 class="card-title"><%= representative.name %></h4>
+
+          <p> <%= representative.party %> - <%= representative.district %> </p>
+          <p><strong>Official Statement:</strong> <%= na_voter.position %> </p>
           <div class ="white-text">
            <%= link_to "View", representative , class: "btn btn-primary btn-block" %>
            <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#stanceModal-<%= representative.id %>">Edit Stance</button>
