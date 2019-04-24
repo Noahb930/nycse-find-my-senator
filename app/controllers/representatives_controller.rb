@@ -2,7 +2,6 @@ require 'nokogiri'
 require 'open-uri'
 require 'sendgrid-ruby'
 require 'geokit'
-require 'dotenv'
 class RepresentativesController < ApplicationController
       before_action :set_representative, only: [:show, :edit, :update, :destroy]
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
