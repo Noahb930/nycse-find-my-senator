@@ -2,19 +2,16 @@ require 'nokogiri'
 require 'open-uri'
 require 'sendgrid-ruby'
 require 'geokit'
+require 'dotenv'
 class RepresentativesController < ApplicationController
       before_action :set_representative, only: [:show, :edit, :update, :destroy]
   USERS = { ENV['USERNAME'] => ENV['PASSWORD'] }
-  before_action :authenticate, except: [:index, :show, :find, :votes, :donations, :contact]
+  before_action :authenticate, except: [:index, :show, :find, :votes, :donations, :contact, :mail]
   def find
     address=params[:address]
     city=params[:city]
     zip=params[:zipcode]
     @reps = []
-    Representative.where(profession:"US Senator").each do |rep|
-      @reps.push(rep)
-    end
-
     district = ""
     results = Geocoder.search("#{address}, #{city} #{zip}")
     if results.empty?
@@ -26,40 +23,6 @@ class RepresentativesController < ApplicationController
     else
       latlng = results.first.coordinates
       loc =  Geokit::LatLng.new(latlng[0], latlng[1])
-      file = File.read("house_map.json").downcase
-      maps = JSON.parse(file)
-      maps["features"].each do |map|
-        district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
-        if map["geometry"]["type"] == "polygon"
-          points = []
-          map["geometry"]["coordinates"][0].each do |point|
-            points << Geokit::LatLng.new(point[1], point[0])
-          end
-          polygon = Geokit::Polygon.new(points)
-          if polygon.contains? loc
-            rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
-            unless rep.nil?
-              @reps.push(rep)
-            end
-            break
-          end
-        else
-          map["geometry"]["coordinates"][0].each do |shape|
-            points = []
-            shape.each do |point|
-              points << Geokit::LatLng.new(point[1], point[0])
-            end
-          end
-          polygon = Geokit::Polygon.new(points)
-          if polygon.contains? loc
-            rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
-            unless rep.nil?
-              @reps.push(rep)
-            end
-            break
-          end
-        end
-      end
       file = File.read('state_senate_map.json').downcase
       maps = JSON.parse(file)
       maps["features"].each do |map|
@@ -162,6 +125,43 @@ class RepresentativesController < ApplicationController
           end
         end
       end
+      Representative.where(profession:"US Senator").each do |rep|
+        @reps.push(rep)
+      end
+      file = File.read("house_map.json").downcase
+      maps = JSON.parse(file)
+      maps["features"].each do |map|
+        district = "District " + map["properties"]["district"].to_s.sub(/^[0]+/,'')
+        if map["geometry"]["type"] == "polygon"
+          points = []
+          map["geometry"]["coordinates"][0].each do |point|
+            points << Geokit::LatLng.new(point[1], point[0])
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
+          end
+        else
+          map["geometry"]["coordinates"][0].each do |shape|
+            points = []
+            shape.each do |point|
+              points << Geokit::LatLng.new(point[1], point[0])
+            end
+          end
+          polygon = Geokit::Polygon.new(points)
+          if polygon.contains? loc
+            rep = Representative.where(profession:"Member of The US House of Representatives").where(district: district).first
+            unless rep.nil?
+              @reps.push(rep)
+            end
+            break
+          end
+        end
+      end
       respond_to do |format|
         format.html { render :view}
       end
@@ -211,7 +211,6 @@ class RepresentativesController < ApplicationController
     subject = params[:subject]
     content = SendGrid::Content.new(type: 'text/plain', value: "Dear Representative #{@representative.name},\n #{params[:message]} \nSincerely,\n #{params[:name]}")
     mail = SendGrid::Mail.new(from, subject, to, content)
-    puts mail.to_json
     sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
     response = sg.client.mail._('send').post(request_body: mail.to_json)
     puts response.status_code

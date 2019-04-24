@@ -1,7 +1,7 @@
 
 <center>
 <header class="rep-header">
-<h1><%= @representative.profession %> <%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
+<h2><%= @representative.profession %> <%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h2>
 </header>
 <div class="card text-center center border_orange" id="representative_card">
   <div class="card-header border_orange">
@@ -23,7 +23,16 @@
   <div class="card-body">
     <div class="inner narrow center">
       <br>
-      <form method="post">
+
+<% if @representative.profession=="Member of The US House of Representatives" || @representative.profession=="US Senator"%>
+<div class ="container">
+  <p>Members of the US Senate and House do not reveal their email addresses so you must email them through their website which is embedded below.</p>
+<iframe id="contact_frame" class="border_orange rounded" src=<%= @representative.email %>>
+<p>Placeholder text; only shows up if the page DOESN'T render!</p>
+</iframe>
+</div>
+<% else %>
+      <form method="post" action =<%="/representatives/#{@representative.id}/contact"%>>
         <%= token_tag %>
         <div class ="container">
           <div class="row">
@@ -55,14 +64,15 @@
             </div>
           </div>
         </div>
+        <div>
           <br>
           <ul class="actions">
             <li><button class="button" type="submit">Send</button></li>
           </ul>
         </div>
       </form>
+  <% end %>
       <br>
     </div>
   </div>
-</div>
 </center>

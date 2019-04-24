@@ -1,7 +1,7 @@
 
 <center>
   <header>
-<h1><%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h1>
+<h2><%= @representative.name%> <%= @representative.party%> - <%= @representative.district%></h2>
 </header>
 <div class="card text-center center border_orange" id="representative_card">
   <div class="card-header border_orange">
@@ -23,7 +23,7 @@
   <div class="card-body">
     <img align="left" src="<%= @representative.img %>" ></img>
     <div>
-    <h3>NYCSE Rating: <%= @representative.rating%></h2>
+    <h3>NYCSE Rating: <%= @representative.rating%></h3>
     <h4>Beliefs Regarding Gun Control:</h4>
 
         <% unless @representative.beliefs.blank? %>
