@@ -874,3 +874,33 @@ margin-top: 100px;
 	height:300px;
 	align-self: center;
 }
+#scroll-img-left{
+	border:none;
+	width:200px;
+	margin-left: 25px;
+	margin-top: 50px;
+	overflow-x:hidden;
+	float: left;
+	position: sticky;
+	top:50px;
+}
+#scroll-img-right{
+	border:none;
+	width:200px;
+	position: sticky;
+	margin-right: 25px;
+	margin-top: 50px;
+	overflow-x:hidden;
+	float: right;
+	top:50px;
+}
+#scroll-div{
+	height:2750px;
+	position: absolute;
+	display: flex;
+	justify-content: space-between;
+	width:100%;
+}
+#rep-div{
+	position: relative;
+}

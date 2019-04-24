@@ -1,12 +1,16 @@
 
 <center>
+
     <header>
   <h1>YOUR REPRESENTATIVES</h1>
     </header>
-  <p>Scroll Down the Page to View All of Your Legislators as Well as Their Positons on Gun Control, as Well as Their Voting Record and Campaign Finances.
+  <p>Scroll Down the Page to View All of Your Legislators as Well as Their Positons on Gun Control, Voting Record and Campaign Finances.
     <br>Then Click the Contact Tab to Send Your Representative a Prewritten or Custom Email Regarding a Current Issue.</p>
-</center>
-<div data-turbolinks="false">
+<div id="scroll-div">
+<img id="scroll-img-left" src=<%= image_url('scroll.png') %>></img>
+<img id="scroll-img-right"  src=<%= image_url('scroll.png') %>></img>
+</div>
+<div id="rep-div" data-turbolinks="false">
   <% @reps.each_with_index do |representative, index| %>
     <section class="rep-section" id = "rep-<%=index%>">
       <div class="representative_container" id = "representative_container_<%= index %>">
@@ -15,3 +19,4 @@
     </section>
   <% end %>
 </div>
+  </center>
