@@ -873,7 +873,7 @@ margin-top: 100px;
 }
 #scroll-img-left{
 	border:none;
-	width:200px;
+	width:25%;
 	margin-left: 25px;
 	margin-top: 50px;
 	overflow-x:hidden;
@@ -883,7 +883,7 @@ margin-top: 100px;
 }
 #scroll-img-right{
 	border:none;
-	width:200px;
+	width:25%;
 	position: sticky;
 	margin-right: 25px;
 	margin-top: 50px;
