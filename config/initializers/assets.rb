@@ -12,6 +12,7 @@ Rails.application.config.assets.precompile += %w( representatives.css )
 Rails.application.config.assets.precompile += %w( bills.css )
 Rails.application.config.assets.precompile += %w( lobbyists.css )
 Rails.application.config.assets.precompile += %w( donations.css )
+Rails.application.config.assets.precompile += %w( emails.css )
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.

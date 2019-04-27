@@ -4,11 +4,13 @@ Rails.application.routes.draw do
 
 
 
+  resources :emails
   scope '/admin' do
     resources :votes, except: [:index, :edit, :show]
     resources :bills
     resources :donations, only: [:create, :destroy]
     resources :lobbyists
+    resources :emails
     resources :donations
     resources :representatives, except: [:index, :show, :find, :destroy, :new, :create, :destroy_all, :contact]
     get '/representatives/', to: 'representatives#admin_index'

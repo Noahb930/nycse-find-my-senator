@@ -36,6 +36,20 @@
         <%= token_tag %>
         <div class ="container">
           <div class="row">
+            <div class="col-sm-12">
+              <div class="field">
+                  <select id="template" class="form-control">
+                    <option>Choose a Template</option>
+                    <option>Blank</option>
+                    <% Email.where(profession: @representative.profession).each do |email| %>
+                      <option value="<%= email.id %>" ><%= email.ref %></option>
+                    <% end %>
+                  </select>
+                </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
             <div class="col-sm-6">
               <div class = "field">
                 <input type="text" class="form-control" id="name" name="name" placeholder="Full Name">
@@ -76,3 +90,18 @@
     </div>
   </div>
 </center>
+<script>
+  let templates = {
+    <% Email.where(profession: @representative.profession).each do |email| %>
+      "<%= email.id %>": {
+        subject: "<%= email.subject %>",
+        content: "<%= email.content %>"
+      },
+    <% end %>
+  }
+  $("#template").on('change', function() {
+    id = this.value
+    $("#subject").val(templates[id]["subject"])
+    $("#message").val(templates[id]["content"])
+  });
+</script>
