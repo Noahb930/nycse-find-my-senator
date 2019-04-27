@@ -40,7 +40,6 @@
               <div class="field">
                   <select id="template" class="form-control">
                     <option>Choose a Template</option>
-                    <option>Blank</option>
                     <% Email.where(profession: @representative.profession).each do |email| %>
                       <option value="<%= email.id %>" ><%= email.ref %></option>
                     <% end %>
