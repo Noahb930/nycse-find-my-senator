@@ -164,13 +164,13 @@ namespace :scrape do
     end
   end
   task links: :environment do
-      ["CORP","PACS"].each do |category|
+      ["OTHER", "CORP","PACS"].each do |category|
       links_obj = Representative.where(name: "links array")[0]
       links_array = links_obj.beliefs.split(" ")
       agent = Mechanize.new
       form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
       form = form_page.forms[1]
-      Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).where.not("rating like ?", "%A%").each do |representative|
+      Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).each do |representative|
         puts "################################################"
         puts "################################################"
         puts representative.name
@@ -246,50 +246,52 @@ namespace :scrape do
     agent = Mechanize.new
     form_page = agent.get('https://www.elections.ny.gov/ContributionSearchA.html')
     form = form_page.forms[1]
-    Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).where.not("rating like ?", "%A%").each do |representative|
-      puts "################################################"
-      puts "################################################"
-      puts representative.name
-      names = representative.name.split(" ")
-      last_name = ""
-      if names[-1][-1] == "."
-        last_name = names[-2]
-      else
-        last_name = names[-1]
-      end
-      form.field_with(:name => 'NAME_IN').value = last_name
-      form.field_with(:name => 'date_from').value = "01/01/1990"
-      form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
-      form.field_with(:name => 'AMOUNT_from').value = 0
-      form.field_with(:name => 'CATEGORY_IN').value = "OTHER"
-      form.field_with(:name => 'AMOUNT_to').value = 1000000
-      funds_page = agent.submit(form)
-      links = funds_page.links[3..funds_page.links.length-2]
-      links.each_with_index do |link, i|
-        links_array.each do |confirmed|
-          if link.href.split("&date_From")[0] == confirmed.split("&date_From")[0]
-            puts "vyubibu vbijnco9 w8"
-            donations_page = link.click
-            rows = donations_page.search("tr")
-            rows[2..-2].each do |row|
-              year = row.css("td")[2].text.split("-")[2].to_i
-              if year > 20
-                year = "19"+year.to_s
-              else
-                year = "20"+year.to_s
-              end
-              name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
-              puts name
-              value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
-              Lobbyist.all.each do |lobbyist|
-                if name.include? lobbyist.name
-                  puts lobbyist.name
-                  donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
-                  donation.save()
-                  representative.donations.push(donation)
-                  representative.save()
-                  lobbyist.donations.push(donation)
-                  lobbyist.save()
+    ["OTHER", "CORP","PACS"].each do |category|
+      Representative.where(profession: ["NY State Senator", "NY State Assembly Member"]).each do |representative|
+        puts "################################################"
+        puts "################################################"
+        puts representative.name
+        names = representative.name.split(" ")
+        last_name = ""
+        if names[-1][-1] == "."
+          last_name = names[-2]
+        else
+          last_name = names[-1]
+        end
+        form.field_with(:name => 'NAME_IN').value = last_name
+        form.field_with(:name => 'date_from').value = "01/01/1990"
+        form.field_with(:name => 'date_to').value = Time.now.strftime("%m/%d/%Y")
+        form.field_with(:name => 'AMOUNT_from').value = 0
+        form.field_with(:name => 'CATEGORY_IN').value = category
+        form.field_with(:name => 'AMOUNT_to').value = 1000000
+        funds_page = agent.submit(form)
+        links = funds_page.links[3..funds_page.links.length-2]
+        links.each_with_index do |link, i|
+          links_array.each do |confirmed|
+            if link.href.split("&date_From")[0] == confirmed.split("&date_From")[0]
+              puts "vyubibu vbijnco9 w8"
+              donations_page = link.click
+              rows = donations_page.search("tr")
+              rows[2..-2].each do |row|
+                year = row.css("td")[2].text.split("-")[2].to_i
+                if year > 20
+                  year = "19"+year.to_s
+                else
+                  year = "20"+year.to_s
+                end
+                name = row.search("td").children.text.split("\n")[0].to_s.strip.chop
+                puts name
+                value = "$" + /(?!\.)[1-9](\d)+(\,\d{3})*/.match(name).to_s
+                Lobbyist.all.each do |lobbyist|
+                  if name.include? lobbyist.name
+                    puts lobbyist.name
+                    donation = Donation.new(representative_id: representative.id, lobbyist_id: lobbyist.id, value: value, year: year)
+                    donation.save()
+                    representative.donations.push(donation)
+                    representative.save()
+                    lobbyist.donations.push(donation)
+                    lobbyist.save()
+                  end
                 end
               end
             end
