@@ -32,7 +32,7 @@
   	    <% if total > 0 %>
   	    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "Money Recieved From Gun Lobbyists: $#{number_with_delimiter(total)}"%></h4>
   	    <% else %>
-  	    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "No Money Recieved From Gun Lobbyists!!!"%></h4>
+  	    <h4><%= fa_icon "money-bill-alt 2x", right: false, text: "No Money Recieved From Gun Lobbyists!"%></h4>
   	    <%end%>
     <% donations.each do |donation| %>
       <% lobbyist = Lobbyist.find(donation.lobbyist_id) %>
